@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "testinvenio"
+version = "1.0.0"
+description = "test server"
+authors = [
+    "Mirek Simek <miroslav.simek@vscht.cz>"
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+requests = "^2.24.0"
+
+oarepo = "^3.3.0"
+oarepo-micro-api = "^1.0.0"
+oarepo-invenio-model = "^2.0.1"
+# oarepo-ui = "^1.1.0"
+oarepo-ui = {path = "../../oarepo-ui"}
+oarepo-actions = "^1.0.1"
+deepmerge = "^0.1.1"
+
+
+[tool.poetry.plugins."invenio_base.api_apps"]
+testinvenio = "testinvenio.ext:TestExt"
+
+
+[tool.poetry.plugins."invenio_base.apps"]
+testinvenio = "testinvenio.ext:TestExt"
+
+[tool.poetry.plugins."invenio_search.mappings"]
+testinvenio = "testinvenio.mappings"
+
+[tool.poetry.plugins."flask.commands"]
+testrepo = 'testinvenio.cli:testrepo'
+
+[tool.poetry.dev-dependencies]
+wheel = "^0.35.1"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
