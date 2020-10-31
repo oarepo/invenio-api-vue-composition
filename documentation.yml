@@ -1,0 +1,54 @@
+toc:
+  - name: High-level API
+    description: |
+      The high-level API is supposed to be used inside Vue 3 setup() method. An example for displaying a collection of records might be:
+      ```javascript
+       export default defineComponent({
+         template: `
+          <div>
+            <pre v-for="record in records" :key="record.id">{{ record.metadata.title }}</pre>
+          </div>
+         `,
+         setup(props, ctx) {
+            const {records, load} = useInvenioCollection('/api')
+            load('records')
+            return { records }
+         }
+       })
+      ```
+    children:
+      - useInvenioCollection
+      - useInvenioRecord
+      - useInvenioOptions
+  - name: Data types
+    description: |
+      Data types returned by high-level calls
+    children:
+      - HttpError
+      - FacetDefinition
+      - FacetInstanceDefinition
+      - RecordRouteDef
+      - InvenioOptions
+  - name: Options
+    description: |
+      Options for high-level API calls (optional, needed only if you want to tweak the swrv timeouts, http error etc.)
+    children:
+      - InvenioCollectionListOptions
+      - InvenioRecordOptions
+      - InvenioHttpOptionOptions
+  - name: Composable responses
+    description: |
+      Composable responses returned by high-level calls
+    children:
+      - UseInvenioCollectionComposable
+      - UseInvenioRecordComposable
+      - UseInvenioOptionsComposable
+  - name: :Low-level API
+    children:
+      - useHttp
+      - useFetcher
+      - SWRVOptions
+      - FetcherOptions
+      - FetcherFunction
+      - FetcherFunctionContext
+      - UseFetcherComposable
