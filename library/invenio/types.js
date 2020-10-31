@@ -29,7 +29,7 @@ export type FacetDefinition = {
 /**
  * HTTP options are just ``<any>``thing
  */
-export type InvenioHttpOptions = {
+export type InvenioOptions = {
   facets: FacetDefinition[],
   filters: any
 }
@@ -60,7 +60,7 @@ export type UseInvenioOptionsComposable = {
   /**
    * loaded options
    */
-  options: Ref<InvenioHttpOptions>,
+  options: Ref<InvenioOptions>,
   /**
    * Any error received from the underlying http library
    */
@@ -114,7 +114,7 @@ export type InvenioCollectionListOptions<Record> = {
    * @param httpGetOptions          options passed to useInvenioCollection
    */
   uiLinkTransformer: (record: Record, response: any,
-                      collectionOptions: InvenioHttpOptions,
+                      collectionOptions: InvenioOptions,
                       httpGetOptions: InvenioCollectionListOptions<Record>) => RecordRouteDef,
 
   /**
@@ -127,7 +127,7 @@ export type InvenioCollectionListOptions<Record> = {
    * @param httpGetOptions          options passed to useInvenioCollection
    */
   recordTransformer: (record: Record, response: any,
-                      collectionOptions: InvenioHttpOptions,
+                      collectionOptions: InvenioOptions,
                       httpGetOptions: InvenioCollectionListOptions<Record>) => Record
 } & FetcherOptions<HttpError>
 
@@ -205,7 +205,7 @@ export type UseInvenioCollectionComposable<Record> = {
   /**
    * loaded collection options
    */
-  options: Ref<InvenioHttpOptions>
+  options: Ref<InvenioOptions>
 }
 
 /*
@@ -228,7 +228,7 @@ export type InvenioRecordOptions<Record> = {
    * @param httpGetOptions          options passed to useInvenioCollection
    */
   recordTransformer: (record: Record, response: any,
-                      collectionOptions: InvenioHttpOptions,
+                      collectionOptions: InvenioOptions,
                       httpGetOptions: InvenioRecordOptions<Record>) => Record
 } & FetcherOptions<HttpError>
 
@@ -247,13 +247,20 @@ export type UseInvenioRecordComposable<Record> = {
    */
   recordId: Ref<string>,
   /**
+   * Use this collection for subsequent loads
+   *
+   * @param collection
+   */
+  useCollection: (collection: string) => void,
+  /**
    * loads a record
    *
-   * @param collection  collection of the record. Pass null to load record in collectionCode
    * @param recordId    id of the record
+   * @param collection  collection of the record.
+   *                    Pass null to load record in collectionCode (set for example in useCollection call)
    * @param force       reload even if currently loaded
    */
-  load: (collection: string, recordId: string, force?: boolean) => void,
+  load: (recordId: string, collection?: string, force?: boolean) => void,
   /**
    * reload currently loaded record
    */
@@ -281,5 +288,5 @@ export type UseInvenioRecordComposable<Record> = {
   /**
    * collection HTTP OPTIONS
    */
-  options: Ref<InvenioHttpOptions>
+  options: Ref<InvenioOptions>
 }

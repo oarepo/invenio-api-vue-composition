@@ -16,8 +16,9 @@ import { useHttp } from '../http/http'
  * @param httpOptionOptions   extra options for HTTP options request
  * @returns                   composable UseInvenioCollectionComposable
  */
-export function useInvenioCollection<Record>(baseUrl: string, httpGetOptions: InvenioCollectionListOptions<Record>,
-                                      httpOptionOptions: InvenioHttpOptionOptions): UseInvenioCollectionComposable<Record> {
+export function useInvenioCollection<Record>(
+  baseUrl: string, httpGetOptions: InvenioCollectionListOptions<Record>,
+  httpOptionOptions: InvenioHttpOptionOptions): UseInvenioCollectionComposable<Record> {
 
   const {
     options: collectionOptions,

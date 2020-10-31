@@ -39,6 +39,11 @@ export function useInvenioRecord<Record>(
     httpGetOptions
   )
 
+  function useCollection(collection: string) {
+    currentCollectionCode.value = collection
+    currentRecordId.value = null
+  }
+
   function load(recordId: string, collectionCode?: string, force = false) {
     if (collectionCode && currentCollectionCode.value !== collectionCode) {
       optionsLoad(collectionCode)
@@ -76,6 +81,7 @@ export function useInvenioRecord<Record>(
   return {
     collectionCode: currentCollectionCode,
     recordId: currentRecordId,
+    useCollection,
     load,
     reload,
     create,

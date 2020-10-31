@@ -4,7 +4,7 @@ import { computed, ref, watch } from '@vue/composition-api'
 import useSWRV, { mutate } from 'swrv'
 import { concatenateUrl, key2url, stringifyQuery } from '../utils'
 import { useDefaultErrorFormatter } from '../errors'
-import type { FetcherFunction, FetcherOptions, HttpError, Ref, UseFetcher } from './types'
+import type { FetcherFunction, FetcherOptions, HttpError, Ref, UseFetcherComposable } from './types'
 
 /**
  * A wrap around swrv library to make loading resources identified by base url + relative parts easier
@@ -32,7 +32,7 @@ export function useFetcher<DataType, ErrorType: HttpError>(
   baseUrl: string,
   cacheKeyPrefix: string,
   fetcherFunction: FetcherFunction<DataType, ErrorType>,
-  options: FetcherOptions<ErrorType>): UseFetcher<DataType, ErrorType> {
+  options: FetcherOptions<ErrorType>): UseFetcherComposable<DataType, ErrorType> {
   if (baseUrl.endsWith('/')) {
     baseUrl = baseUrl.substr(0, baseUrl.length - 1)
   }

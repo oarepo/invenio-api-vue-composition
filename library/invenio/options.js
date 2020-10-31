@@ -1,7 +1,7 @@
 // @flow
 
 import { computed } from '@vue/composition-api'
-import type { InvenioHttpOptionOptions, InvenioHttpOptions, UseInvenioOptionsComposable } from './types'
+import type { InvenioHttpOptionOptions, InvenioOptions, UseInvenioOptionsComposable } from './types'
 import { useHttp } from '../http/http'
 import type { HttpError } from '../http/types'
 
@@ -35,7 +35,7 @@ export function useInvenioOptions(baseUrl: string, options: InvenioHttpOptionOpt
 
   const {
     stale, loading, data, error, load, loaded, reload
-  } = useHttp<InvenioHttpOptions, HttpError>(
+  } = useHttp<InvenioOptions, HttpError>(
     baseUrl,
     'options',
     options

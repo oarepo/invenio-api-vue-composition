@@ -126,7 +126,7 @@ export type FetcherFunction<DataType, ErrorType: HttpError> =
  *   // do something with data.value after the data arrives, for example show in the template
  * ```
  */
-export type UseFetcher<DataType, ErrorType: HttpError> = {
+export type UseFetcherComposable<DataType, ErrorType: HttpError> = {
   /**
    * base url of the API. Might be either a full url (__https://server/path__)
    * or an absolute path on the current server beginning with '/' (__/api__)

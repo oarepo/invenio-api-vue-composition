@@ -1,4 +1,4 @@
-import type { FetcherOptions, UseFetcher } from './types'
+import type { FetcherOptions, UseFetcherComposable } from './types'
 import { useFetcher } from './fetcher'
 import axios from 'axios'
 
@@ -9,12 +9,12 @@ import axios from 'axios'
  * @param baseUrl   the base url
  * @param method
  * @param options
- * @returns {UseFetcher<DataType, ErrorType>}
+ * @returns {UseFetcherComposable<DataType, ErrorType>}
  */
 export function useHttp<DataType, ErrorType>(
   baseUrl: string,
   method: string,
-  options: FetcherOptions<ErrorType>): UseFetcher<DataType, ErrorType> {
+  options: FetcherOptions<ErrorType>): UseFetcherComposable<DataType, ErrorType> {
   return useFetcher(baseUrl, method, async (url, options) => {
     return (await axios({
       method,
