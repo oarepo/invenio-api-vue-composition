@@ -8,7 +8,7 @@
       <div class="row facet" v-for="bucket in facet.buckets" :key="bucket.key">
         <div>
           <input type="checkbox" v-model="facet.model" :value="bucket.key">
-          <span>{{ bucket.key }}</span>
+          <span>{{ bucket.key_as_string || bucket.key }}</span>
         </div>
         <span>{{ bucket.doc_count }}</span>
       </div>

@@ -27,6 +27,7 @@
         <button @click.prevent="doSearch"><i class="fas fa-search"></i></button>
       </div>
       <facet v-for="facet in facets" :key="facet.code" :facet="facet"></facet>
+
       <div style="height: 300px"></div>
       <b>Debugging info:</b>
       <table>

@@ -43,10 +43,17 @@ export function useInvenioCollection<Record>(
     }
     const receivedFacets = data.value.aggregations || {}
     return knownFacets.value.map(facetDef => {
-      return {
+      const ret = {
         ...facetDef,
         ...receivedFacets[facetDef.code]
       }
+      if (ret.facet?.values && ret.buckets) {
+        ret.buckets = ret.buckets.map(x => {
+          x.key_as_string = ret.facet.values[x.key] || x.key_as_string || x.key
+          return x
+        })
+      }
+      return ret
     })
   })
 
