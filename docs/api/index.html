@@ -34,7 +34,7 @@
                   <span class='icon'>▸</span>
                 </a>
                 
-                <div class='toggle-target display-none'>
+                <div class='toggle-target'>
                   
                   <ul class='list-reset py1-ul pl1'>
                     <li class='h5'><span>Static members</span></li>
@@ -43,6 +43,12 @@
                         href='#collection'
                         class='regular pre-open'>
                         .collection
+                      </a></li>
+                    
+                      <li><a
+                        href='#record'
+                        class='regular pre-open'>
+                        .record
                       </a></li>
                     
                     </ul>
@@ -62,7 +68,7 @@
                   <span class='icon'>▸</span>
                 </a>
                 
-                <div class='toggle-target display-none'>
+                <div class='toggle-target'>
                   
                   <ul class='list-reset py1-ul pl1'>
                     <li class='h5'><span>Static members</span></li>
@@ -102,7 +108,7 @@
                   <span class='icon'>▸</span>
                 </a>
                 
-                <div class='toggle-target display-none'>
+                <div class='toggle-target'>
                   
                   <ul class='list-reset py1-ul pl1'>
                     <li class='h5'><span>Static members</span></li>
@@ -154,7 +160,7 @@
                   <span class='icon'>▸</span>
                 </a>
                 
-                <div class='toggle-target display-none'>
+                <div class='toggle-target'>
                   
                   <ul class='list-reset py1-ul pl1'>
                     <li class='h5'><span>Static members</span></li>
@@ -194,7 +200,7 @@
                   <span class='icon'>▸</span>
                 </a>
                 
-                <div class='toggle-target display-none'>
+                <div class='toggle-target'>
                   
                   <ul class='list-reset py1-ul pl1'>
                     <li class='h5'><span>Static members</span></li>
@@ -234,7 +240,7 @@
                   <span class='icon'>▸</span>
                 </a>
                 
-                <div class='toggle-target display-none'>
+                <div class='toggle-target'>
                   
                   <ul class='list-reset py1-ul pl1'>
                     <li class='h5'><span>Static members</span></li>
@@ -365,7 +371,7 @@
             <span class='code strong strong truncate'>collection(options, extra)</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -526,15 +532,26 @@
         object to put into the router routes
 <p><em>Viewer/Loading/Error component</em></p>
 <p>The component is passed the following props:</p>
-<pre class='hljs'> <span class="hljs-tag">&lt;<span class="hljs-name">component</span>
-   <span class="hljs-attr">:collection-api</span>=<span class="hljs-string">"collectionApi"</span>
-   <span class="hljs-attr">:records</span>=<span class="hljs-string">"collectionApi.records"</span>
-   <span class="hljs-attr">:facets</span>=<span class="hljs-string">"collectionApi.facets"</span>
-   <span class="hljs-attr">:loading</span>=<span class="hljs-string">"collectionApi.loading"</span>
-   <span class="hljs-attr">:loaded</span>=<span class="hljs-string">"collectionApi.loaded"</span>
-   <span class="hljs-attr">:error</span>=<span class="hljs-string">"collectionApi.error"</span>
-   <span class="hljs-attr">:stale</span>=<span class="hljs-string">"collectionApi.stale"</span>
- &gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">component</span>&gt;</span></pre>
+<pre class='hljs'><span class="hljs-tag">&lt;<span class="hljs-name">component</span>
+  <span class="hljs-attr">:is</span>=<span class="hljs-string">"currentComponent"</span>
+  <span class="hljs-attr">:collection-api</span>=<span class="hljs-string">"collectionApi"</span>
+  <span class="hljs-attr">:records</span>=<span class="hljs-string">"collectionApi.records.value"</span>
+  <span class="hljs-attr">:facets</span>=<span class="hljs-string">"facets"</span>
+  <span class="hljs-attr">:loading</span>=<span class="hljs-string">"collectionApi.loading.value"</span>
+  <span class="hljs-attr">:loaded</span>=<span class="hljs-string">"collectionApi.loaded.value"</span>
+  <span class="hljs-attr">:error</span>=<span class="hljs-string">"collectionApi.error.value"</span>
+  <span class="hljs-attr">:stale</span>=<span class="hljs-string">"collectionApi.stale.value"</span>
+  <span class="hljs-attr">:pages</span>=<span class="hljs-string">"collectionApi.pages.value"</span>
+  <span class="hljs-attr">:page</span>=<span class="hljs-string">"$query.page"</span>
+  <span class="hljs-attr">:pageSize</span>=<span class="hljs-string">"$query.size"</span>
+  <span class="hljs-attr">:query</span>=<span class="hljs-string">"$query.q"</span>
+  <span class="hljs-attr">:reload</span>=<span class="hljs-string">"collectionApi.reload"</span>
+  @<span class="hljs-attr">nextPage</span>=<span class="hljs-string">"nextPage"</span>
+  @<span class="hljs-attr">prevPage</span>=<span class="hljs-string">"prevPage"</span>
+  @<span class="hljs-attr">setPage</span>=<span class="hljs-string">"setPage"</span>
+  @<span class="hljs-attr">setPageSize</span>=<span class="hljs-string">"setPageSize"</span>
+  @<span class="hljs-attr">search</span>=<span class="hljs-string">"search"</span>
+&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">component</span>&gt;</span></pre>
 <p><em>Example</em>:</p>
 <pre class='hljs'> routes = [
    collection({
@@ -549,6 +566,7 @@
   {
      <span class="hljs-attr">path</span>: <span class="hljs-string">'records'</span>,
      <span class="hljs-attr">component</span>: CollectionWrapper,
+     <span class="hljs-attr">name</span>: <span class="hljs-string">'recordList'</span>,
      <span class="hljs-attr">props</span>: {
        <span class="hljs-attr">collectionCode</span>: <span class="hljs-string">'records'</span>,
        <span class="hljs-attr">viewerComponent</span>: MyCollectionViewer,
@@ -562,6 +580,212 @@
          <span class="hljs-attr">facets</span>: <span class="hljs-string">'commaarray:'</span>,
          <span class="hljs-attr">q</span>: <span class="hljs-string">'string:'</span>
        }
+     }
+   }
+ ]</pre>
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='record'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>record(options, extra)</span>
+        </div>
+      </div>
+      <div class="clearfix toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Generates route path for a record</p>
+
+    <div class='pre p1 fill-light mt0'>record(options: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>, extra: any): any</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>options</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+	    options
+
+          </div>
+          
+          <table class='mt1 mb2 fixed-table h5 col-12'>
+            <colgroup>
+              <col width='30%' />
+              <col width='70%' />
+            </colgroup>
+            <thead>
+              <tr class='bold fill-light'>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody class='mt1'>
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.path</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+  </td>
+  <td class='break-word'><span>route path. If not defined, equals to 
+<code>${collectionCode}/:recordId</code>
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.collectionCode</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+  </td>
+  <td class='break-word'><span>collection code that will be appended to api url.
+If not defined, equals to route path up to the last '/'
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.viewerComponent</span> <code class='quiet'>Component</code>
+  </td>
+  <td class='break-word'><span>viewer component for showing the record
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.errorComponent</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | Component)</code>
+  </td>
+  <td class='break-word'><span>component shown on error
+<ul>
+<li>if component is passed it will be used to render the error</li>
+<li>If set to 'viewer', viewerComponent will be used</li>
+<li>If set to 'simple' or undefined, simple component showing the error with a retry button is shown</li>
+</ul>
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.loadingComponent</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | Component)</code>
+  </td>
+  <td class='break-word'><span>component shown while loading record
+<ul>
+<li>if component is passed it will be used during loading when records are not available.</li>
+<li>If set to 'viewer', viewerComponent will be used during loading</li>
+<li>If set to 'empty' or undefined, empty space is shown during load</li>
+</ul>
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.apiUrl</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+  </td>
+  <td class='break-word'><span>Invenio api url, defaults to '/api'
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.httpOptionsProps</span> <code class='quiet'><a href="#inveniohttpoptionoptions">InvenioHttpOptionOptions</a></code>
+  </td>
+  <td class='break-word'><span>InvenioHttpOptionOptions used for fetching collection options
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.httpGetProps</span> <code class='quiet'><a href="#inveniorecordoptions">InvenioRecordOptions</a></code>
+  </td>
+  <td class='break-word'><span>InvenioRecordOptions used for fetching the record
+</span></td>
+</tr>
+
+
+              
+            </tbody>
+          </table>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>extra</span> <code class='quiet'>(any)</code>
+	    extra parameters to be merged with the route object
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>any</code>:
+        object to put into the router routes
+<p><em>Viewer/Loading/Error component</em></p>
+<p>The component is passed the following props:</p>
+<pre class='hljs'></pre>
+<p><em>Example</em>:</p>
+<pre class='hljs'> routes = [
+   record({
+       <span class="hljs-attr">collectionCode</span>: <span class="hljs-string">'records'</span>,
+       <span class="hljs-attr">viewerComponent</span>: MyRecordViewer,
+     },
+     { <span class="hljs-attr">name</span>: <span class="hljs-string">'record'</span> }
+   )
+ ]</pre>
+<p> Will evaluate to:</p>
+<pre class='hljs'> routes = [
+  {
+     <span class="hljs-attr">path</span>: <span class="hljs-string">'records/:recordId'</span>,
+     <span class="hljs-attr">component</span>: RecordWrapper,
+     <span class="hljs-attr">name</span>: <span class="hljs-string">'record'</span>,
+     <span class="hljs-attr">props</span>: {
+       <span class="hljs-attr">collectionCode</span>: <span class="hljs-string">'records'</span>,
+       <span class="hljs-attr">viewerComponent</span>: MyRecordViewer,
+       <span class="hljs-attr">errorComponent</span>: <span class="hljs-string">'simple'</span>,
+       <span class="hljs-attr">loadingComponent</span>: <span class="hljs-string">'empty'</span>
      }
    }
  ]</pre>
@@ -678,7 +902,7 @@ not yet finished (either still loading or finished with an error)</li>
             <span class='code strong strong truncate'>useInvenioCollection(baseUrl, httpGetOptions, httpOptionOptions)</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -769,7 +993,7 @@ to get collection options - human name, facets, filters, etc...</p>
             <span class='code strong strong truncate'>useInvenioRecord(baseUrl, httpGetOptions, httpOptionOptions)</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -860,7 +1084,7 @@ to get collection options - so that these might be used to transform the record 
             <span class='code strong strong truncate'>useInvenioOptions(baseUrl, options)</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -1002,7 +1226,7 @@ to get collection options - so that these might be used to transform the record 
             <span class='code strong strong truncate'>HttpError</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -1122,7 +1346,7 @@ error in callers.</p>
             <span class='code strong strong truncate'>FacetDefinition</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -1188,7 +1412,7 @@ error in callers.</p>
             <span class='code strong strong truncate'>FacetInstanceDefinition</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -1242,7 +1466,7 @@ error in callers.</p>
             <span class='code strong strong truncate'>RecordRouteDef</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -1296,7 +1520,7 @@ error in callers.</p>
             <span class='code strong strong truncate'>InvenioOptions</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -1418,7 +1642,7 @@ error in callers.</p>
             <span class='code strong strong truncate'>InvenioCollectionListOptions</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -1472,7 +1696,7 @@ error in callers.</p>
             <span class='code strong strong truncate'>uiLinkTransformer(record, response, collectionOptions, httpGetOptions)</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -1573,7 +1797,7 @@ The link will be placed as record.links.ui property</p>
             <span class='code strong strong truncate'>recordTransformer(record, response, collectionOptions, httpGetOptions)</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -1688,7 +1912,7 @@ before it is returned.</p>
             <span class='code strong strong truncate'>InvenioRecordOptions</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -1742,7 +1966,7 @@ before it is returned.</p>
             <span class='code strong strong truncate'>recordTransformer(record, response, collectionOptions, httpGetOptions)</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -1857,7 +2081,7 @@ before it is returned.</p>
             <span class='code strong strong truncate'>InvenioHttpOptionOptions</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -1975,7 +2199,7 @@ before it is returned.</p>
             <span class='code strong strong truncate'>UseInvenioCollectionComposable</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -2072,6 +2296,12 @@ before it is returned.</p>
         </div>
       
         <div class='space-bottom0'>
+          <span class='code bold'>pages</span> <code class='quiet'>(Ref&#x3C;(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a> | null)>)</code>
+          
+          
+        </div>
+      
+        <div class='space-bottom0'>
           <span class='code bold'>options</span> <code class='quiet'>(Ref&#x3C;<a href="#inveniooptions">InvenioOptions</a>>)</code>
           
           
@@ -2107,7 +2337,7 @@ before it is returned.</p>
             <span class='code strong strong truncate'>collectionCode</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -2161,7 +2391,7 @@ before it is returned.</p>
             <span class='code strong strong truncate'>collectionUrl</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -2215,7 +2445,7 @@ before it is returned.</p>
             <span class='code strong strong truncate'>collectionQuery</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -2269,7 +2499,7 @@ before it is returned.</p>
             <span class='code strong strong truncate'>collectionUrlWithQuery</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -2323,7 +2553,7 @@ before it is returned.</p>
             <span class='code strong strong truncate'>load(collection, query, force)</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -2414,7 +2644,7 @@ before it is returned.</p>
             <span class='code strong strong truncate'>reload()</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -2473,7 +2703,7 @@ before it is returned.</p>
             <span class='code strong strong truncate'>loading</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -2527,7 +2757,7 @@ before it is returned.</p>
             <span class='code strong strong truncate'>loaded</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -2581,7 +2811,7 @@ before it is returned.</p>
             <span class='code strong strong truncate'>stale</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -2635,7 +2865,7 @@ before it is returned.</p>
             <span class='code strong strong truncate'>error</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -2689,7 +2919,7 @@ before it is returned.</p>
             <span class='code strong strong truncate'>facets</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -2743,7 +2973,7 @@ before it is returned.</p>
             <span class='code strong strong truncate'>records</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -2790,6 +3020,60 @@ before it is returned.</p>
       </div>
     </div>
   
+    <div class='border-bottom' id='useinveniocollectioncomposablepages'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>pages</span>
+        </div>
+      </div>
+      <div class="clearfix toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>number of pages</p>
+
+    <div class='pre p1 fill-light mt0'>pages</div>
+  
+    <p>
+      Type:
+      Ref&#x3C;(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a> | null)>
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
     <div class='border-bottom' id='useinveniocollectioncomposableoptions'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -2797,7 +3081,7 @@ before it is returned.</p>
             <span class='code strong strong truncate'>options</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -2865,7 +3149,7 @@ before it is returned.</p>
             <span class='code strong strong truncate'>UseInvenioRecordComposable</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -2985,7 +3269,7 @@ before it is returned.</p>
             <span class='code strong strong truncate'>collectionCode</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -3039,7 +3323,7 @@ before it is returned.</p>
             <span class='code strong strong truncate'>recordId</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -3093,7 +3377,7 @@ before it is returned.</p>
             <span class='code strong strong truncate'>useCollection(collection)</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -3165,7 +3449,7 @@ before it is returned.</p>
             <span class='code strong strong truncate'>load(recordId, collection?, force?)</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -3257,7 +3541,7 @@ Pass null to load record in collectionCode (set for example in useCollection cal
             <span class='code strong strong truncate'>reload()</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -3316,7 +3600,7 @@ Pass null to load record in collectionCode (set for example in useCollection cal
             <span class='code strong strong truncate'>loading</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -3370,7 +3654,7 @@ Pass null to load record in collectionCode (set for example in useCollection cal
             <span class='code strong strong truncate'>loaded</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -3424,7 +3708,7 @@ Pass null to load record in collectionCode (set for example in useCollection cal
             <span class='code strong strong truncate'>stale</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -3478,7 +3762,7 @@ Pass null to load record in collectionCode (set for example in useCollection cal
             <span class='code strong strong truncate'>error</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -3532,7 +3816,7 @@ Pass null to load record in collectionCode (set for example in useCollection cal
             <span class='code strong strong truncate'>record</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -3586,7 +3870,7 @@ Pass null to load record in collectionCode (set for example in useCollection cal
             <span class='code strong strong truncate'>options</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -3654,7 +3938,7 @@ Pass null to load record in collectionCode (set for example in useCollection cal
             <span class='code strong strong truncate'>UseInvenioOptionsComposable</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -3756,7 +4040,7 @@ Pass null to load record in collectionCode (set for example in useCollection cal
             <span class='code strong strong truncate'>stale</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -3810,7 +4094,7 @@ Pass null to load record in collectionCode (set for example in useCollection cal
             <span class='code strong strong truncate'>loading</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -3864,7 +4148,7 @@ Pass null to load record in collectionCode (set for example in useCollection cal
             <span class='code strong strong truncate'>loaded</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -3918,7 +4202,7 @@ Pass null to load record in collectionCode (set for example in useCollection cal
             <span class='code strong strong truncate'>options</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -3972,7 +4256,7 @@ Pass null to load record in collectionCode (set for example in useCollection cal
             <span class='code strong strong truncate'>error</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -4026,7 +4310,7 @@ Pass null to load record in collectionCode (set for example in useCollection cal
             <span class='code strong strong truncate'>load(module, query?, force?)</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -4117,7 +4401,7 @@ Pass null to load record in collectionCode (set for example in useCollection cal
             <span class='code strong strong truncate'>reload()</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -4176,7 +4460,7 @@ Pass null to load record in collectionCode (set for example in useCollection cal
             <span class='code strong strong truncate'>knownFacets</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -4300,7 +4584,7 @@ Pass null to load record in collectionCode (set for example in useCollection cal
             <span class='code strong strong truncate'>useHttp(baseUrl, method, options)</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -4395,7 +4679,7 @@ Pass null to load record in collectionCode (set for example in useCollection cal
             <span class='code strong strong truncate'>useFetcher(baseUrl, cacheKeyPrefix, fetcherFunction, options)</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -4509,7 +4793,7 @@ Pass null to load record in collectionCode (set for example in useCollection cal
             <span class='code strong strong truncate'>SWRVOptions</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -4599,7 +4883,7 @@ Pass null to load record in collectionCode (set for example in useCollection cal
             <span class='code strong strong truncate'>FetcherOptions</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -4645,7 +4929,7 @@ Pass null to load record in collectionCode (set for example in useCollection cal
             <span class='code strong strong truncate'>errorFormatter(rawError)</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -4731,7 +5015,7 @@ Pass null to load record in collectionCode (set for example in useCollection cal
             <span class='code strong strong truncate'>FetcherFunction</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -4851,7 +5135,7 @@ Pass null to load record in collectionCode (set for example in useCollection cal
             <span class='code strong strong truncate'>FetcherFunctionContext</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -4915,7 +5199,7 @@ Pass null to load record in collectionCode (set for example in useCollection cal
             <span class='code strong strong truncate'>urlWithoutQuery</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -4969,7 +5253,7 @@ Pass null to load record in collectionCode (set for example in useCollection cal
             <span class='code strong strong truncate'>query</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -5023,7 +5307,7 @@ Pass null to load record in collectionCode (set for example in useCollection cal
             <span class='code strong strong truncate'>options</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -5091,7 +5375,7 @@ Pass null to load record in collectionCode (set for example in useCollection cal
             <span class='code strong strong truncate'>UseFetcherComposable</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -5220,7 +5504,7 @@ url into three parts: base url, module, query.</p>
             <span class='code strong strong truncate'>baseUrl</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -5275,7 +5559,7 @@ or an absolute path on the current server beginning with '/' (<strong>/api</stro
             <span class='code strong strong truncate'>currentApiModule</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -5329,7 +5613,7 @@ or an absolute path on the current server beginning with '/' (<strong>/api</stro
             <span class='code strong strong truncate'>currentApiUrl</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -5383,7 +5667,7 @@ or an absolute path on the current server beginning with '/' (<strong>/api</stro
             <span class='code strong strong truncate'>currentApiQuery</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -5437,7 +5721,7 @@ or an absolute path on the current server beginning with '/' (<strong>/api</stro
             <span class='code strong strong truncate'>currentApiUrlWithQuery</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -5491,7 +5775,7 @@ or an absolute path on the current server beginning with '/' (<strong>/api</stro
             <span class='code strong strong truncate'>stale</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -5545,7 +5829,7 @@ or an absolute path on the current server beginning with '/' (<strong>/api</stro
             <span class='code strong strong truncate'>loading</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -5599,7 +5883,7 @@ or an absolute path on the current server beginning with '/' (<strong>/api</stro
             <span class='code strong strong truncate'>loaded</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -5653,7 +5937,7 @@ or an absolute path on the current server beginning with '/' (<strong>/api</stro
             <span class='code strong strong truncate'>data</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -5707,7 +5991,7 @@ or an absolute path on the current server beginning with '/' (<strong>/api</stro
             <span class='code strong strong truncate'>error</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -5761,7 +6045,7 @@ or an absolute path on the current server beginning with '/' (<strong>/api</stro
             <span class='code strong strong truncate'>load(module, query?, force?)</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -5852,7 +6136,7 @@ or an absolute path on the current server beginning with '/' (<strong>/api</stro
             <span class='code strong strong truncate'>reload()</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
@@ -5911,7 +6195,7 @@ or an absolute path on the current server beginning with '/' (<strong>/api</stro
             <span class='code strong strong truncate'>prefetch(module, data, query?)</span>
         </div>
       </div>
-      <div class="clearfix display-none toggle-target">
+      <div class="clearfix toggle-target">
         <section class='p2 mb2 clearfix bg-white minishadow'>
 
   

@@ -13,18 +13,19 @@
             :pageSize="$query.size"
             :query="$query.q"
             :reload="collectionApi.reload"
+            @reload="collectionApi.reload"
             @nextPage="nextPage"
             @prevPage="prevPage"
             @setPage="setPage"
+            @setPageSize="setPageSize"
             @search="search"
     ></component>
 </template>
 <script>
 import { computed, defineComponent, getCurrentInstance, watch } from '@vue/composition-api'
 import { useInvenioCollection } from '..'
-import SimpleErrorComponent from './SimpleErrorComponent.vue'
-import EmptyLoadingComponent from './EmptyLoadingComponent.vue'
 import { ArrayDatatype } from '@oarepo/vue-query-synchronizer'
+import {selectComponent} from './componentSelector'
 
 export default defineComponent({
   name: 'invenio-collection-wrapper',
@@ -85,27 +86,10 @@ export default defineComponent({
 
     reload()
 
-    const currentComponent = computed(() => {
-      if (collectionApi.records.value && collectionApi.records.value) {
-        return props.viewerComponent
-      } else if (collectionApi.error.value) {
-        if (props.errorComponent === 'viewer') {
-          return props.viewerComponent
-        } else if (props.errorComponent === 'simple' || !props.errorComponent) {
-          return SimpleErrorComponent
-        } else {
-          return props.errorComponent
-        }
-      } else {
-        if (props.loadingComponent === 'viewer') {
-          return props.viewerComponent
-        } else if (props.loadingComponent === 'simple' || !props.loadingComponent) {
-          return EmptyLoadingComponent
-        } else {
-          return props.loadingComponent
-        }
-      }
-    })
+    const currentComponent = selectComponent (
+      () => collectionApi.records.value,
+      () => collectionApi.error.value,
+      props)
 
     function nextPage() {
       if (vm.$query.page < collectionApi.pages.value) {
@@ -122,6 +106,12 @@ export default defineComponent({
     function setPage(page) {
       if (page >= 1 && page <= collectionApi.pages.value) {
         vm.$query.page = page
+      }
+    }
+
+    function setPageSize(pageSize) {
+      if (pageSize > 0) {
+        vm.$query.size = pageSize
       }
     }
 
@@ -173,6 +163,7 @@ export default defineComponent({
       nextPage,
       prevPage,
       setPage,
+      setPageSize,
       search
     }
   }

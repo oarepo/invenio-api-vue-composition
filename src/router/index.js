@@ -1,16 +1,23 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import { collection } from '@oarepo/invenio-api-vue-composition'
+import { collection, record } from '@oarepo/invenio-api-vue-composition'
 import CollectionViewer from '../components/CollectionViewer.vue'
+import RecordViewer from '../components/RecordViewer.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
+  record({
+    collectionCode: 'records',
+    viewerComponent: RecordViewer
+  }, {
+    name: 'record'
+  }),
   collection({
       path: '/',
       collectionCode: 'records',
       viewerComponent: CollectionViewer,
-      recordRouteName: 'record',
+      recordRouteName: 'record'
     },
     {
       name: 'recordList',

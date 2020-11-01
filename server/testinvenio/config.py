@@ -34,7 +34,7 @@ RECORDS_REST_ENDPOINTS = {
                 'application/json': 'invenio_records_rest.serializers:json_v1_search',
             },
             list_route='/records/',
-            item_route='/records/<pid(recid,record_class="testinvenio.records.OAIRecord"):pid_value>',
+            item_route='/records/<pid(recid,record_class="testinvenio.records.TestRecord"):pid_value>',
             default_media_type='application/json',
             max_result_window=10000,
             create_permission_factory_imp=allow_all,

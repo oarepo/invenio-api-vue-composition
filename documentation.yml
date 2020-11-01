@@ -24,6 +24,7 @@ toc:
       ```
     children:
       - collection
+      - record
   - name: High-level API
     description: |
       The high-level API is supposed to be used inside Vue 3 setup() method. An example for displaying a collection of records might be:

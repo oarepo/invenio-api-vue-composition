@@ -1,4 +1,5 @@
 import CollectionWrapper from './components/CollectionWrapper.vue'
+import RecordWrapper from './components/RecordWrapper.vue'
 import deepmerge from 'deepmerge'
 
 /**
@@ -38,15 +39,26 @@ import deepmerge from 'deepmerge'
  * The component is passed the following props:
  *
  * ```html
- *  <component
- *    :collection-api="collectionApi"
- *    :records="collectionApi.records"
- *    :facets="collectionApi.facets"
- *    :loading="collectionApi.loading"
- *    :loaded="collectionApi.loaded"
- *    :error="collectionApi.error"
- *    :stale="collectionApi.stale"
- *  ></component>
+ * <component
+ *   :is="currentComponent"
+ *   :collection-api="collectionApi"
+ *   :records="collectionApi.records.value"
+ *   :facets="facets"
+ *   :loading="collectionApi.loading.value"
+ *   :loaded="collectionApi.loaded.value"
+ *   :error="collectionApi.error.value"
+ *   :stale="collectionApi.stale.value"
+ *   :pages="collectionApi.pages.value"
+ *   :page="$query.page"
+ *   :pageSize="$query.size"
+ *   :query="$query.q"
+ *   :reload="collectionApi.reload"
+ *   \@nextPage="nextPage"
+ *   \@prevPage="prevPage"
+ *   \@setPage="setPage"
+ *   \@setPageSize="setPageSize"
+ *   \@search="search"
+ * ></component>
  * ```
  *
  * *Example*:
@@ -69,6 +81,7 @@ import deepmerge from 'deepmerge'
  *   {
  *      path: 'records',
  *      component: CollectionWrapper,
+ *      name: 'recordList',
  *      props: {
  *        collectionCode: 'records',
  *        viewerComponent: MyCollectionViewer,
@@ -100,10 +113,10 @@ export function collection(
     httpGetProps
   }, extra: any): any {
   let proto = {
-    path,
+    path: (path ? path : '/' + collectionCode),
     component: CollectionWrapper,
     props: {
-      collectionCode,
+      collectionCode: (collectionCode ? collectionCode : path),
       viewerComponent: viewerComponent,
       errorComponent: errorComponent,
       loadingComponent: loadingComponent,
@@ -119,6 +132,112 @@ export function collection(
         facets: 'commaarray:',
         q: 'string:'
       }
+    }
+  }
+  if (extra) {
+    proto = deepmerge(proto, extra)
+  }
+  return proto
+}
+
+
+/**
+ * Generates route path for a record
+ *
+ * @param options                 options
+ * @param {string} options.apiUrl          Invenio api url, defaults to '/api'
+ * @param {string} options.collectionCode  collection code that will be appended to api url.
+ *                                         If not defined, equals to route path up to the last '/'
+ * @param {string} options.path            route path. If not defined, equals to `${collectionCode}/:recordId`
+ * @param {Component} options.viewerComponent
+ *                                viewer component for showing the record
+ * @param {string|Component} options.errorComponent component shown on error
+ *
+ * - if component is passed it will be used to render the error
+ * - If set to 'viewer', viewerComponent will be used
+ * - If set to 'simple' or undefined, simple component showing the error with a retry button is shown
+ *
+ * @param {string|Component} options.loadingComponent component shown while loading record
+ *
+ * - if component is passed it will be used during loading when records are not available.
+ * - If set to 'viewer', viewerComponent will be used during loading
+ * - If set to 'empty' or undefined, empty space is shown during load
+ *
+ * @param {InvenioHttpOptionOptions} options.httpOptionsProps
+ *      InvenioHttpOptionOptions used for fetching collection options
+ * @param {InvenioRecordOptions} options.httpGetProps
+ *      InvenioRecordOptions used for fetching the record
+ *
+ * @param extra                   extra parameters to be merged with the route object
+ *
+ * @returns object to put into the router routes
+ *
+ * *Viewer/Loading/Error component*
+ *
+ * The component is passed the following props:
+ *
+ * ```html
+ * ```
+ *
+ * *Example*:
+ *
+ * ```javascript
+ *  routes = [
+ *    record({
+ *        collectionCode: 'records',
+ *        viewerComponent: MyRecordViewer,
+ *      },
+ *      { name: 'record' }
+ *    )
+ *  ]
+ * ```
+ *
+ *  Will evaluate to:
+ *
+ * ```javascript
+ *  routes = [
+ *   {
+ *      path: 'records/:recordId',
+ *      component: RecordWrapper,
+ *      name: 'record',
+ *      props: {
+ *        collectionCode: 'records',
+ *        viewerComponent: MyRecordViewer,
+ *        errorComponent: 'simple',
+ *        loadingComponent: 'empty'
+ *      }
+ *    }
+ *  ]
+ * ```
+ */
+export function record(
+  {
+    path,
+    collectionCode,
+    viewerComponent,
+    errorComponent,
+    loadingComponent,
+    apiUrl,
+    httpOptionsProps,
+    httpGetProps
+  }, extra: any): any {
+  if (!path) {
+    path = `/${collectionCode}/:recordId`
+  } else if (!collectionCode) {
+    const collectionCodeSplit = path.split('/')
+    collectionCode = collectionCodeSplit.slice(0, path.length-1).join('/')
+  }
+  let proto = {
+    path,
+    component: RecordWrapper,
+    props: {
+      collectionCode,
+      viewerComponent: viewerComponent,
+      errorComponent: errorComponent,
+      loadingComponent: loadingComponent,
+      httpOptionsProps,
+      httpGetProps,
+      apiUrl
     }
   }
   if (extra) {

@@ -3,9 +3,9 @@
     <div class="page">
       <div id="nav">
         <router-link to="/">Record collection</router-link>
-        <router-link to="/1">First record</router-link>
-        <router-link to="/2">Second record</router-link>
-        <router-link to="/3">Third record</router-link>
+        <router-link to="/records/1">First record</router-link>
+        <router-link to="/records/2">Second record</router-link>
+        <router-link to="/records/3">Third record</router-link>
         <div class="fill-space"></div>
         <a href="https://github.com/oarepo/invenio-api-vue-composition">Github</a>
       </div>
@@ -14,14 +14,14 @@
   </div>
 </template>
 <script>
-export default {
-}
+export default {}
 </script>
 <style lang="scss">
 html, body {
   margin: 0;
   padding: 0;
 }
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -40,6 +40,7 @@ html, body {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
+
   a {
     font-weight: bold;
     color: #2c3e50;
@@ -77,6 +78,7 @@ html, body {
     width: 33%;
     display: flex;
     flex-direction: column;
+
     & > * {
       margin-bottom: 10px;
       width: 100%;
@@ -110,8 +112,39 @@ html, body {
   }
 
   h3 {
+    a {
+      color: #42b983 !important;
+      text-decoration: none !important;
+    }
+  }
+}
+
+.record {
+  h3 {
     color: #42b983;
   }
+
+  .document-type {
+    color: grey;
+    border-right: 2px solid lightgrey;
+    padding-right: 10px;
+    margin-right: 10px;
+    font-weight: normal;
+  }
+
+  table {
+    td:first-child {
+      padding-right: 20px;
+      color: #444;
+    }
+    td:last-child {
+      color: #222;
+    }
+  }
+}
+
+.facets-list {
+  margin-top: 20px;
 }
 
 .facet {
@@ -122,6 +155,16 @@ html, body {
 
   input {
     margin-right: 10px;
+  }
+}
+
+.debug-info {
+  margin-top: 100px;
+  color: grey;
+
+  b {
+    display: block;
+    margin-bottom: 20px;
   }
 }
 

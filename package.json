@@ -7,8 +7,8 @@
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
-    "apidoc": "rimraf docs/api; documentation build 'library/index.js' -f html -o docs/api --config documentation.yml",
-    "serve-apidoc": "documentation serve 'library/index.js' -f html --watch --config documentation.yml"
+    "apidoc": "rimraf docs/api; documentation build 'library/index.js' -f html -o docs/api --config documentation.yml --theme docs/theme",
+    "serve-apidoc": "documentation serve 'library/index.js' -f html --watch --config documentation.yml --theme docs/theme"
   },
   "dependencies": {
     "@oarepo/vue-query-synchronizer": "^2.4.1",
