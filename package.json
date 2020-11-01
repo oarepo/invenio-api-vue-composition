@@ -3,7 +3,7 @@
   "version": "1.0.0a1",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --host localhost",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
@@ -15,8 +15,10 @@
     "@vue/composition-api": "^1.0.0-beta.18",
     "axios": "^0.21.0",
     "core-js": "^3.6.5",
+    "deepmerge": "^4.2.2",
     "swrv": "^0.8.0",
     "vue": "^2.6.11",
+    "vue-i18n": "^8.22.1",
     "vue-router": "^3.2.0"
   },
   "devDependencies": {

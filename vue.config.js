@@ -5,6 +5,7 @@ const exp = {}
 
 if (useProxy) {
   exp['devServer'] = {
+    https: true,
     proxy: {
       '^/api': {
         target: 'https://localhost:5000',
@@ -15,6 +16,9 @@ if (useProxy) {
 }
 
 module.exports = {
+  transpileDependencies: [
+    'swrv'
+  ],
   configureWebpack(cfg) {
     cfg.resolve.alias['@oarepo/invenio-api-vue-composition'] = path.join(__dirname, 'library/index.js')
   },

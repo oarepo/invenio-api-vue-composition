@@ -1,4 +1,29 @@
 toc:
+  - name: Route components
+    description: |
+      A set of wrapping components and route helpers so that your components handle just the presentation logic.
+
+      **Example:**
+      ```javascript
+
+      routes = [
+        collection({
+            collectionCode: 'records',
+            viewerComponent: MyCollectionViewer,
+            recordRouteName: 'record'
+          },
+          { name: 'recordList' }
+        ),
+        record({
+            collectionCode: 'records',
+            viewerComponent: MyRecordViewer,
+          },
+          { name: 'record' }
+        )
+      ]
+      ```
+    children:
+      - collection
   - name: High-level API
     description: |
       The high-level API is supposed to be used inside Vue 3 setup() method. An example for displaying a collection of records might be:
@@ -6,16 +31,31 @@ toc:
        export default defineComponent({
          template: `
           <div>
-            <pre v-for="record in records" :key="record.id">{{ record.metadata.title }}</pre>
+            <div v-if="loaded">
+               <h3>Loaded records</h3>
+               <pre v-for="record in records" :key="record.id" :class="{'stale': stale}">{{ record.metadata.title }}</pre>
+            </div>
+            <div v-else>Nothing loaded yet, loading {{ loading }}</div>
+            <pre v-if="error">Error during fetching resource: {{ error }}</pre>
           </div>
          `,
          setup(props, ctx) {
-            const {records, load} = useInvenioCollection('/api')
+            const {records, load, loaded, loading, error, stale} = useInvenioCollection('/api')
             load('records')
-            return { records }
+            return { records, loaded, error, loading, stale }
          }
        })
       ```
+
+       All the APIs return the following Ref<>s containing loading status and errors:
+
+        * ``loading``: true if loading is in progress.
+                       false if the resource finished
+                       loading (either successfully or with an error)
+        * ``stale``: true if successful loading of a resource has
+                       not yet finished (either still loading or finished with an error)
+        * ``loaded``: true if a loaded version of the resource is available (regardless if it is or is not stale)
+        * ``error``: filled if the last loading request resulted in error
     children:
       - useInvenioCollection
       - useInvenioRecord

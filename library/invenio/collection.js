@@ -72,9 +72,9 @@ export function useInvenioCollection<Record>(
   function load(module, query, force) {
     if (currentApiModule.value !== module) {
       // reload options
-      optionsLoad(module)
+      optionsLoad(module + '/')
     }
-    return httpLoad(module, query, force)
+    return httpLoad(module + '/', query, force)
   }
 
   return {

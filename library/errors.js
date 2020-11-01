@@ -1,7 +1,7 @@
 // @flow
 
 import { computed } from '@vue/composition-api'
-import type { Ref, HttpError } from './types'
+import type { Ref, HttpError } from './http/types'
 
 export function useDefaultErrorFormatter(rawError: any): Ref<HttpError> {
   return computed(() => {

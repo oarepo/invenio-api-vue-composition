@@ -28,6 +28,34 @@
               
                 
                 <li><a
+                  href='#route-components'
+                  class="h5 bold black caps toggle-sibling">
+                  Route components
+                  <span class='icon'>▸</span>
+                </a>
+                
+                <div class='toggle-target display-none'>
+                  
+                  <ul class='list-reset py1-ul pl1'>
+                    <li class='h5'><span>Static members</span></li>
+                    
+                      <li><a
+                        href='#collection'
+                        class='regular pre-open'>
+                        .collection
+                      </a></li>
+                    
+                    </ul>
+                  
+                  
+                  
+                  
+                </div>
+                
+                </li>
+              
+                
+                <li><a
                   href='#high-level-api'
                   class="h5 bold black caps toggle-sibling">
                   High-level API
@@ -277,6 +305,308 @@
   
   <div class='clearfix'>
     
+    <h3 class='fl m0' id='route-components'>
+      Route components
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>A set of wrapping components and route helpers so that your components handle just the presentation logic.</p>
+<p><strong>Example:</strong></p>
+<pre class='hljs'>routes = [
+  collection({
+      <span class="hljs-attr">collectionCode</span>: <span class="hljs-string">'records'</span>,
+      <span class="hljs-attr">viewerComponent</span>: MyCollectionViewer,
+      <span class="hljs-attr">recordRouteName</span>: <span class="hljs-string">'record'</span>
+    },
+    { <span class="hljs-attr">name</span>: <span class="hljs-string">'recordList'</span> }
+  ),
+  record({
+      <span class="hljs-attr">collectionCode</span>: <span class="hljs-string">'records'</span>,
+      <span class="hljs-attr">viewerComponent</span>: MyRecordViewer,
+    },
+    { <span class="hljs-attr">name</span>: <span class="hljs-string">'record'</span> }
+  )
+]</pre>
+
+    <div class='pre p1 fill-light mt0'>Route components</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Static Members</div>
+    <div class="clearfix">
+  
+    <div class='border-bottom' id='collection'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>collection(options, extra)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Generates route path for a collection</p>
+
+    <div class='pre p1 fill-light mt0'>collection(options: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>, extra: any): any</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>options</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+	    options
+
+          </div>
+          
+          <table class='mt1 mb2 fixed-table h5 col-12'>
+            <colgroup>
+              <col width='30%' />
+              <col width='70%' />
+            </colgroup>
+            <thead>
+              <tr class='bold fill-light'>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody class='mt1'>
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.path</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+  </td>
+  <td class='break-word'><span>route path. If not defined, equals to collectionCode
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.collectionCode</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+  </td>
+  <td class='break-word'><span>collection code that will be appended to api url. If not defined, equals to route path
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.viewerComponent</span> <code class='quiet'>Component</code>
+  </td>
+  <td class='break-word'><span>viewer component for showing the records and facets
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.errorComponent</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | Component)</code>
+  </td>
+  <td class='break-word'><span>component shown on error
+<ul>
+<li>if component is passed it will be used to render the error</li>
+<li>If set to 'viewer', viewerComponent will be used</li>
+<li>If set to 'simple' or undefined, simple component showing the error with a retry button is shown</li>
+</ul>
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.loadingComponent</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | Component)</code>
+  </td>
+  <td class='break-word'><span>component shown while loading records
+<ul>
+<li>if component is passed it will be used during loading when records are not available.</li>
+<li>If set to 'viewer', viewerComponent will be used during loading</li>
+<li>If set to 'empty' or undefined, empty space is shown during load</li>
+</ul>
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.apiUrl</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+  </td>
+  <td class='break-word'><span>Invenio api url, defaults to '/api'
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.recordRouteName</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+  </td>
+  <td class='break-word'><span>name of route that will be used to show the record. the route must contain 
+<code>recordId</code>
+ url param.
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.httpOptionsProps</span> <code class='quiet'><a href="#inveniohttpoptionoptions">InvenioHttpOptionOptions</a></code>
+  </td>
+  <td class='break-word'><span>InvenioHttpOptionOptions used for fetching collection options
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.httpGetProps</span> <code class='quiet'><a href="#inveniocollectionlistoptions">InvenioCollectionListOptions</a></code>
+  </td>
+  <td class='break-word'><span>InvenioCollectionListOptions used for fetching the collection
+</span></td>
+</tr>
+
+
+              
+            </tbody>
+          </table>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>extra</span> <code class='quiet'>(any)</code>
+	    extra parameters to be merged with the route object
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>any</code>:
+        object to put into the router routes
+<p><em>Viewer/Loading/Error component</em></p>
+<p>The component is passed the following props:</p>
+<pre class='hljs'> <span class="hljs-tag">&lt;<span class="hljs-name">component</span>
+   <span class="hljs-attr">:collection-api</span>=<span class="hljs-string">"collectionApi"</span>
+   <span class="hljs-attr">:records</span>=<span class="hljs-string">"collectionApi.records"</span>
+   <span class="hljs-attr">:facets</span>=<span class="hljs-string">"collectionApi.facets"</span>
+   <span class="hljs-attr">:loading</span>=<span class="hljs-string">"collectionApi.loading"</span>
+   <span class="hljs-attr">:loaded</span>=<span class="hljs-string">"collectionApi.loaded"</span>
+   <span class="hljs-attr">:error</span>=<span class="hljs-string">"collectionApi.error"</span>
+   <span class="hljs-attr">:stale</span>=<span class="hljs-string">"collectionApi.stale"</span>
+ &gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">component</span>&gt;</span></pre>
+<p><em>Example</em>:</p>
+<pre class='hljs'> routes = [
+   collection({
+       <span class="hljs-attr">collectionCode</span>: <span class="hljs-string">'records'</span>,
+       <span class="hljs-attr">viewerComponent</span>: MyCollectionViewer,
+     },
+     { <span class="hljs-attr">name</span>: <span class="hljs-string">'recordList'</span> }
+   )
+ ]</pre>
+<p> Will evaluate to:</p>
+<pre class='hljs'> routes = [
+  {
+     <span class="hljs-attr">path</span>: <span class="hljs-string">'records'</span>,
+     <span class="hljs-attr">component</span>: CollectionWrapper,
+     <span class="hljs-attr">props</span>: {
+       <span class="hljs-attr">collectionCode</span>: <span class="hljs-string">'records'</span>,
+       <span class="hljs-attr">viewerComponent</span>: MyCollectionViewer,
+       <span class="hljs-attr">errorComponent</span>: <span class="hljs-string">'simple'</span>,
+       <span class="hljs-attr">loadingComponent</span>: <span class="hljs-string">'empty'</span>
+     },
+     <span class="hljs-attr">meta</span>: {
+       <span class="hljs-attr">query</span>: {
+         <span class="hljs-attr">page</span>: <span class="hljs-string">'int:1'</span>,
+         <span class="hljs-attr">size</span>: <span class="hljs-string">'int:10'</span>,
+         <span class="hljs-attr">facets</span>: <span class="hljs-string">'commaarray:'</span>,
+         <span class="hljs-attr">q</span>: <span class="hljs-string">'string:'</span>
+       }
+     }
+   }
+ ]</pre>
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+</div>
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
     <h3 class='fl m0' id='high-level-api'>
       High-level API
     </h3>
@@ -289,15 +619,30 @@
 <pre class='hljs'> <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> defineComponent({
    <span class="hljs-attr">template</span>: <span class="hljs-string">`
     &lt;div&gt;
-      &lt;pre v-for="record in records" :key="record.id"&gt;{{ record.metadata.title }}&lt;/pre&gt;
+      &lt;div v-if="loaded"&gt;
+         &lt;h3&gt;Loaded records&lt;/h3&gt;
+         &lt;pre v-for="record in records" :key="record.id" :class="{'stale': stale}"&gt;{{ record.metadata.title }}&lt;/pre&gt;
+      &lt;/div&gt;
+      &lt;div v-else&gt;Nothing loaded yet, loading {{ loading }}&lt;/div&gt;
+      &lt;pre v-if="error"&gt;Error during fetching resource: {{ error }}&lt;/pre&gt;
     &lt;/div&gt;
    `</span>,
    setup(props, ctx) {
-      <span class="hljs-keyword">const</span> {records, load} = useInvenioCollection(<span class="hljs-string">'/api'</span>)
+      <span class="hljs-keyword">const</span> {records, load, loaded, loading, error, stale} = useInvenioCollection(<span class="hljs-string">'/api'</span>)
       load(<span class="hljs-string">'records'</span>)
-      <span class="hljs-keyword">return</span> { records }
+      <span class="hljs-keyword">return</span> { records, loaded, error, loading, stale }
    }
  })</pre>
+<p> All the APIs return the following Ref&#x3C;>s containing loading status and errors:</p>
+<ul>
+<li><code>loading</code>: true if loading is in progress.
+false if the resource finished
+loading (either successfully or with an error)</li>
+<li><code>stale</code>: true if successful loading of a resource has
+not yet finished (either still loading or finished with an error)</li>
+<li><code>loaded</code>: true if a loaded version of the resource is available (regardless if it is or is not stale)</li>
+<li><code>error</code>: filled if the last loading request resulted in error</li>
+</ul>
 
     <div class='pre p1 fill-light mt0'>High-level API</div>
   

@@ -56,23 +56,34 @@ export function useFetcher<DataType, ErrorType: HttpError>(
     return `${cacheKeyPrefix}:${url}`
   }
 
-  const { data, error: rawError, isValidating, mutate: reload } =
+  const { data, error: rawError, isValidating, mutate: doReload } =
     useSWRV(
       () => currentApiUrlWithQuery.value ? url2key(currentApiUrlWithQuery.value) : '',
       async key => {
-        stale.value = true
         const ret = await fetcherFunction(key2url(key), {
           urlWithoutQuery: currentApiUrl.value,
           query: currentApiQuery.value,
           options
         })
-        stale.value = false
         return ret
       }, options)
 
-  watch([isValidating, data], () => {
-    if (!isValidating.value && data.value) {
+  function reload() {
+    doReload()
+  }
+
+  watch([isValidating, data, rawError], () => {
+    if (!data.value) {
+      loaded.value = false
+    } else {
       loaded.value = true
+    }
+
+    // stale
+    if (isValidating.value) {
+      stale.value = true
+    } else if (!error.value && data.value) {
+      stale.value = false
     }
   })
 

@@ -17,6 +17,7 @@ oarepo-invenio-model = "^2.0.1"
 oarepo-ui = {path = "../../oarepo-ui"}
 oarepo-actions = "^1.0.1"
 deepmerge = "^0.1.1"
+Faker = "^4.14.0"
 
 
 [tool.poetry.plugins."invenio_base.api_apps"]
