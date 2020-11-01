@@ -1,6 +1,6 @@
 // @flow
 
-import { computed } from '@vue/composition-api'
+import { computed, ref } from '@vue/composition-api'
 import { useInvenioOptions } from './options'
 import type { InvenioCollectionListOptions, InvenioHttpOptionOptions, UseInvenioCollectionComposable } from './types'
 import { useHttp } from '../http/http'
@@ -35,6 +35,8 @@ export function useInvenioCollection<Record>(
     httpGetOptions
   )
 
+  const pageSize = ref(10)
+
   const facets = computed(() => {
     if (!knownFacets.value.length || !data.value) {
       return []
@@ -50,7 +52,7 @@ export function useInvenioCollection<Record>(
 
   const records = computed(() => {
     if (!collectionOptions.value || !data.value) {
-      return []
+      return null
     }
     return data.value.hits.hits.map(record => {
       const uiLinkTransformer = httpGetOptions?.uiLinkTransformer || (record => ({
@@ -69,11 +71,19 @@ export function useInvenioCollection<Record>(
     })
   })
 
+  const pages = computed(() => {
+    if (!collectionOptions.value || !data.value) {
+      return null
+    }
+    return Math.ceil(data.value.hits.total / (pageSize.value || 1))
+  })
+
   function load(module, query, force) {
     if (currentApiModule.value !== module) {
       // reload options
       optionsLoad(module + '/')
     }
+    pageSize.value = query.size || 10
     return httpLoad(module + '/', query, force)
   }
 
@@ -90,6 +100,7 @@ export function useInvenioCollection<Record>(
     error,
     facets,
     records,
+    pages,
     options: collectionOptions
   }
 }

@@ -69,11 +69,34 @@ html, body {
 
   .left {
     width: 66%;
+    display: flex;
+    flex-direction: column;
   }
 
   .right {
     width: 33%;
+    display: flex;
+    flex-direction: column;
+    & > * {
+      margin-bottom: 10px;
+      width: 100%;
+    }
   }
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  width: 100%;
+
+  & > *:not(:last-child) {
+    margin-right: 10px;
+  }
+}
+
+.items-stretch {
+  align-items: stretch;
 }
 
 .record-list {
@@ -88,6 +111,17 @@ html, body {
 
   h3 {
     color: #42b983;
+  }
+}
+
+.facet {
+  padding-left: 20px;
+  width: calc(100% - 20px);
+  justify-content: space-between;
+  align-items: start;
+
+  input {
+    margin-right: 10px;
   }
 }
 

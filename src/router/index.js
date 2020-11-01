@@ -12,7 +12,14 @@ const routes = [
       viewerComponent: CollectionViewer,
       recordRouteName: 'record',
     },
-    { name: 'recordList' }
+    {
+      name: 'recordList',
+      meta: {
+        query: {
+          size: 'int:3' // small page size for demo
+        }
+      }
+    }
   )
 ]
 

@@ -3,19 +3,28 @@
             :is="currentComponent"
             :collection-api="collectionApi"
             :records="collectionApi.records.value"
-            :facets="collectionApi.facets.value"
+            :facets="facets"
             :loading="collectionApi.loading.value"
             :loaded="collectionApi.loaded.value"
             :error="collectionApi.error.value"
             :stale="collectionApi.stale.value"
+            :pages="collectionApi.pages.value"
+            :page="$query.page"
+            :pageSize="$query.size"
+            :query="$query.q"
             :reload="collectionApi.reload"
+            @nextPage="nextPage"
+            @prevPage="prevPage"
+            @setPage="setPage"
+            @search="search"
     ></component>
 </template>
 <script>
-import { computed, defineComponent, watch } from '@vue/composition-api'
+import { computed, defineComponent, getCurrentInstance, watch } from '@vue/composition-api'
 import { useInvenioCollection } from '..'
 import SimpleErrorComponent from './SimpleErrorComponent.vue'
 import EmptyLoadingComponent from './EmptyLoadingComponent.vue'
+import { ArrayDatatype } from '@oarepo/vue-query-synchronizer'
 
 export default defineComponent({
   name: 'invenio-collection-wrapper',
@@ -51,6 +60,7 @@ export default defineComponent({
     }
   },
   setup(props) {
+    const vm = getCurrentInstance()
     const getProps = {
       uiLinkTransformer(record) {
         return {
@@ -65,14 +75,18 @@ export default defineComponent({
     const collectionApi = useInvenioCollection(props.apiUrl, getProps, props.httpOptionsProps)
 
     function reload() {
-      collectionApi.load(props.collectionCode, {}, true)
+      collectionApi.load(props.collectionCode, vm.$query, true)
     }
-
+    watch(computed(() => vm.$query.__self.incr), () => {
+      console.log('query changed, loading ...', vm.$query.__self.incr, JSON.stringify(vm.$query))
+      reload()
+    })
     watch(props, reload)
+
     reload()
 
     const currentComponent = computed(() => {
-      if (collectionApi.records.value && collectionApi.records.value.length) {
+      if (collectionApi.records.value && collectionApi.records.value) {
         return props.viewerComponent
       } else if (collectionApi.error.value) {
         if (props.errorComponent === 'viewer') {
@@ -93,9 +107,73 @@ export default defineComponent({
       }
     })
 
+    function nextPage() {
+      if (vm.$query.page < collectionApi.pages.value) {
+        vm.$query.page++
+      }
+    }
+
+    function prevPage() {
+      if (vm.$query.page > 1) {
+        vm.$query.page--
+      }
+    }
+
+    function setPage(page) {
+      if (page >= 1 && page <= collectionApi.pages.value) {
+        vm.$query.page = page
+      }
+    }
+
+    function search(q) {
+      vm.$query.q = q
+    }
+
+    const facets = computed(() => {
+      const f = collectionApi.facets
+      if (!f.value) {
+        return f.value
+      }
+      return f.value.map(facet => {
+        Object.defineProperty(facet,'enabled', {
+          get() {
+            return vm.$query.facets.includes(facet.code)
+          },
+          set(value) {
+            if (value) {
+              vm.$query.addValue('facets', facet.code)
+            } else {
+              vm.$query.removeValue('facets', facet.code)
+            }
+            return true
+          },
+          enumerable: true,
+          configurable: true
+        })
+        vm.$query.define(facet.code, ArrayDatatype, [])
+        Object.defineProperty(facet,'model', {
+          get() {
+            return vm.$query[facet.code]
+          },
+          set(value) {
+            vm.$query[facet.code] = value
+            return true
+          },
+          enumerable: true,
+          configurable: true
+        })
+        return facet
+      })
+    })
+
     return {
       collectionApi,
-      currentComponent
+      currentComponent,
+      facets,
+      nextPage,
+      prevPage,
+      setPage,
+      search
     }
   }
 })

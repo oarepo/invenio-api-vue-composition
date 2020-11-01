@@ -5,6 +5,7 @@ import useSWRV, { mutate } from 'swrv'
 import { concatenateUrl, key2url, stringifyQuery } from '../utils'
 import { useDefaultErrorFormatter } from '../errors'
 import type { FetcherFunction, FetcherOptions, HttpError, Ref, UseFetcherComposable } from './types'
+import deepEqual from 'deep-equal'
 
 /**
  * A wrap around swrv library to make loading resources identified by base url + relative parts easier
@@ -44,7 +45,7 @@ export function useFetcher<DataType, ErrorType: HttpError>(
   const loaded = ref(false)
   const currentApiUrlWithQuery = computed(() => {
     if (currentApiQuery.value && currentApiUrl.value) {
-      return `${currentApiUrl.value}?${stringifyQuery((currentApiQuery.value))}`
+      return `${currentApiUrl.value}${stringifyQuery((currentApiQuery.value))}`
     }
     return currentApiUrl.value
   })
@@ -88,15 +89,19 @@ export function useFetcher<DataType, ErrorType: HttpError>(
   })
 
   function load(module, query, force = false) {
-    currentApiModule.value = module
-    currentApiUrl.value = concatenateUrl(baseUrl, module)
-    if (query) {
-      currentApiQuery.value = JSON.parse(JSON.stringify(query))
+    const clonedQuery = query ? JSON.parse(JSON.stringify(query)) : null
+    if (currentApiModule.value === module && deepEqual(currentApiQuery.value, clonedQuery)) {
+      if (force) {
+        reload()
+      }
     } else {
-      currentApiQuery.value = null
-    }
-    if (force) {
-      reload()
+      currentApiModule.value = module
+      currentApiUrl.value = concatenateUrl(baseUrl, module)
+      if (query) {
+        currentApiQuery.value = clonedQuery
+      } else {
+        currentApiQuery.value = null
+      }
     }
   }
 
@@ -105,7 +110,7 @@ export function useFetcher<DataType, ErrorType: HttpError>(
   function prefetch(module: string, value: any, query: any) {
     const apiUrl = concatenateUrl(baseUrl, module)
     const apiQuery = query ? JSON.parse(JSON.stringify(query)) : null
-    const apiUrlWithQuery = apiQuery && apiUrl ? `${apiUrl}?${stringifyQuery(apiQuery)}` : apiUrl
+    const apiUrlWithQuery = apiQuery && apiUrl ? `${apiUrl}${stringifyQuery(apiQuery)}` : apiUrl
     const key = url2key(apiUrlWithQuery)
 
     mutate(key, JSON.parse(JSON.stringify(value)))

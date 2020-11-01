@@ -15,8 +15,20 @@
           </tr>
         </table>
       </div>
+      <div class="row">
+        <button v-if="page > 1" @click="$emit('prevPage')">prev page</button>
+        <span><input :value="page" @change="$emit('setPage', $event.target.value)"> of {{ pages }}</span>
+        <button v-if="page < pages" @click="$emit('nextPage')">next page</button>
+      </div>
     </div>
     <div class="right">
+      <div class="row items-stretch">
+        <input name="search" v-model="search" placeholder="Search ..." style="flex-grow: 1;">
+        <button @click.prevent="doSearch"><i class="fas fa-search"></i></button>
+      </div>
+      <facet v-for="facet in facets" :key="facet.code" :facet="facet"></facet>
+      <div style="height: 300px"></div>
+      <b>Debugging info:</b>
       <table>
         <tr>
           <td>Loading</td>
@@ -36,16 +48,32 @@
           </td>
         </tr>
       </table>
-      <pre>{{ facets }}</pre>
     </div>
   </div>
 </template>
 <script>
-
+import Facet from './Facet.vue'
 export default {
   props: [
-    'collectionApi', 'records', 'facets', 'loading', 'loaded', 'error', 'stale', 'reload'
+    'collectionApi', 'records', 'facets', 'loading', 'loaded', 'error', 'stale', 'reload', 'pages', 'page',
+    'query'
   ],
+  components: {
+      Facet
+  },
+  data: function() {
+    return {
+      search: ''
+    }
+  },
+  mounted() {
+    this.search = this.query
+  },
+  methods: {
+    doSearch() {
+      this.$emit('search', this.search)
+    }
+  }
 }
 </script>
 <style>

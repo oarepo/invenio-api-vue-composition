@@ -203,6 +203,10 @@ export type UseInvenioCollectionComposable<Record> = {
    */
   records: Ref<Record[]>,
   /**
+   * number of pages
+   */
+  pages: Ref<number | null>,
+  /**
    * loaded collection options
    */
   options: Ref<InvenioOptions>
