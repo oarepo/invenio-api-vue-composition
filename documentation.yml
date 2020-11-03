@@ -70,6 +70,7 @@ toc:
       - FacetInstanceDefinition
       - RecordRouteDef
       - InvenioOptions
+      - PatchOperation
   - name: Options
     description: |
       Options for high-level API calls (optional, needed only if you want to tweak the swrv timeouts, http error etc.)

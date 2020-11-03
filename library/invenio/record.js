@@ -2,7 +2,12 @@
 
 import { ref } from '@vue/composition-api'
 import axios from 'axios'
-import type { InvenioHttpOptionOptions, InvenioRecordOptions, UseInvenioRecordComposable } from './types'
+import type {
+  InvenioHttpOptionOptions,
+  InvenioRecordOptions,
+  PatchOperation,
+  UseInvenioRecordComposable
+} from './types'
 import { useInvenioOptions } from './options'
 import { useHttp } from '../http/http'
 import { concatenateUrl } from '../utils'
@@ -55,8 +60,11 @@ export function useInvenioRecord<Record>(
     return httpLoad(`${currentCollectionCode.value}/${currentRecordId.value}`, undefined, force)
   }
 
-  async function create(data: Record, collectionCode?: string, storeResult?: boolean): Promise<Record> {
-    const postUrl = concatenateUrl(normalizedBaseUrl, collectionCode || currentCollectionCode.value)
+  async function create(data: Record, { collectionCode, storeResult } = {}): Promise<Record> {
+    if (!collectionCode) {
+      collectionCode = currentCollectionCode.value
+    }
+    const postUrl = concatenateUrl(normalizedBaseUrl, collectionCode)
     try {
       const resp = await axios.post(postUrl, JSON.stringify(data), {
         headers: {
@@ -65,17 +73,69 @@ export function useInvenioRecord<Record>(
       })
       const record: Record = resp.data
       if (storeResult) {
-        prefetch(`${collectionCode || currentCollectionCode.value}/${(record: any).id}`, record)
-
-        if (collectionCode && collectionCode !== currentCollectionCode.value) {
-          currentCollectionCode.value = collectionCode
-        }
-        currentRecordId.value = (record: any).id
+        storeRecordToPrefetch(collectionCode, record)
       }
       return record
     } catch (e) {
       throw httpGetOptions?.errorFormatter ? httpGetOptions.errorFormatter(e) : useDefaultErrorFormatter(e)
     }
+  }
+
+  function storeRecordToPrefetch(collectionCode: string, record: any) {
+    prefetch(`${collectionCode}/${(record: any).id}`, record)
+    if (collectionCode !== currentCollectionCode.value) {
+      currentCollectionCode.value = collectionCode
+    }
+    if (currentRecordId.value !== (record: any).id.toString()) {
+      currentRecordId.value = (record: any).id.toString()
+    }
+  }
+
+  async function patch(data: PatchOperation[], { recordId, collectionCode, storeResult } = {}): Promise<Record> {
+    if (storeResult === undefined) {
+      storeResult = true
+    }
+    if (recordId === undefined) {
+      recordId = currentRecordId.value
+    }
+    if (collectionCode === undefined) {
+      collectionCode = currentCollectionCode.value
+    }
+    const patchUrl = concatenateUrl(normalizedBaseUrl, collectionCode, recordId)
+    try {
+      const resp = await axios.patch(patchUrl, JSON.stringify(data), {
+        headers: {
+          'Content-Type': 'application/json-patch+json; charset=utf-8'
+        }
+      })
+      const record: Record = resp.data
+      if (storeResult) {
+        storeRecordToPrefetch(collectionCode, record)
+      }
+      return record
+    } catch (e) {
+      throw (httpGetOptions?.errorFormatter ? httpGetOptions.errorFormatter(e) : useDefaultErrorFormatter(e)).value
+    }
+  }
+
+  async function remove({ recordId, collectionCode } = {}) : Promise<Record> {
+    if (recordId === undefined) {
+      recordId = currentRecordId.value
+    }
+    if (collectionCode === undefined) {
+      collectionCode = currentCollectionCode.value
+    }
+    const deleteUrl = concatenateUrl(normalizedBaseUrl, collectionCode, recordId)
+    try {
+      const resp = await axios.delete(deleteUrl)
+      return resp.data
+    } catch (e) {
+      throw (httpGetOptions?.errorFormatter ? httpGetOptions.errorFormatter(e) : useDefaultErrorFormatter(e)).value
+    }
+  }
+
+  function _prefetch(collectionCode: string, record: Record) {
+    storeRecordToPrefetch(collectionCode, record)
   }
 
   return {
@@ -85,11 +145,14 @@ export function useInvenioRecord<Record>(
     load,
     reload,
     create,
+    patch,
+    remove,
     loading,
     loaded,
     stale,
     error,
     record: data,
-    options: collectionOptions
+    options: collectionOptions,
+    _prefetch
   }
 }

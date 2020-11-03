@@ -1,6 +1,8 @@
 import CollectionWrapper from './components/CollectionWrapper.vue'
+import CollectionApiWrapper from './components/CollectionApiWrapper.vue'
 import RecordWrapper from './components/RecordWrapper.vue'
 import deepmerge from 'deepmerge'
+
 
 /**
  * Generates route path for a collection
@@ -9,7 +11,7 @@ import deepmerge from 'deepmerge'
  * @param {string} options.apiUrl          Invenio api url, defaults to '/api'
  * @param {string} options.collectionCode  collection code that will be appended to api url. If not defined, equals to route path
  * @param {string} options.path            route path. If not defined, equals to collectionCode
- * @param {Component} options.viewerComponent
+ * @param {Component} options.component
  *                                viewer component for showing the records and facets
  * @param {string|Component} options.errorComponent component shown on error
  *
@@ -67,7 +69,7 @@ import deepmerge from 'deepmerge'
  *  routes = [
  *    collection({
  *        collectionCode: 'records',
- *        viewerComponent: MyCollectionViewer,
+ *        component: MyCollectionViewer,
  *      },
  *      { name: 'recordList' }
  *    )
@@ -104,20 +106,24 @@ export function collection(
   {
     path,
     collectionCode,
-    viewerComponent,
+    component,
     errorComponent,
     loadingComponent,
     apiUrl,
     recordRouteName,
     httpOptionsProps,
-    httpGetProps
+    httpGetProps,
+    wrapperComponent
   }, extra: any): any {
+  if (!wrapperComponent) {
+    wrapperComponent = CollectionWrapper
+  }
   let proto = {
     path: (path ? path : '/' + collectionCode),
-    component: CollectionWrapper,
+    component: wrapperComponent,
     props: {
-      collectionCode: (collectionCode ? collectionCode : path),
-      viewerComponent: viewerComponent,
+      collectionCode: (collectionCode ? collectionCode : path.split('/').filter(x => x).join('/')),
+      viewerComponent: component,
       errorComponent: errorComponent,
       loadingComponent: loadingComponent,
       recordRouteName,
@@ -140,6 +146,28 @@ export function collection(
   return proto
 }
 
+export function collectionApi(
+  {
+    path,
+    collectionCode,
+    component,
+    apiUrl,
+    recordRouteName,
+    httpOptionsProps,
+    httpGetProps,
+  }, extra: any): any {
+  return collection({
+    path,
+    collectionCode,
+    component,
+    apiUrl,
+    recordRouteName,
+    httpOptionsProps,
+    httpGetProps,
+    wrapperComponent: CollectionApiWrapper
+  }, extra)
+}
+
 
 /**
  * Generates route path for a record
@@ -149,7 +177,7 @@ export function collection(
  * @param {string} options.collectionCode  collection code that will be appended to api url.
  *                                         If not defined, equals to route path up to the last '/'
  * @param {string} options.path            route path. If not defined, equals to `${collectionCode}/:recordId`
- * @param {Component} options.viewerComponent
+ * @param {Component} options.component
  *                                viewer component for showing the record
  * @param {string|Component} options.errorComponent component shown on error
  *
@@ -185,7 +213,7 @@ export function collection(
  *  routes = [
  *    record({
  *        collectionCode: 'records',
- *        viewerComponent: MyRecordViewer,
+ *        component: MyRecordViewer,
  *      },
  *      { name: 'record' }
  *    )
@@ -214,7 +242,7 @@ export function record(
   {
     path,
     collectionCode,
-    viewerComponent,
+    component,
     errorComponent,
     loadingComponent,
     apiUrl,
@@ -224,15 +252,15 @@ export function record(
   if (!path) {
     path = `/${collectionCode}/:recordId`
   } else if (!collectionCode) {
-    const collectionCodeSplit = path.split('/')
-    collectionCode = collectionCodeSplit.slice(0, path.length-1).join('/')
+    const collectionCodeSplit = path.split('/').filter(x => x)
+    collectionCode = collectionCodeSplit.slice(0, path.length - 1).join('/')
   }
   let proto = {
     path,
     component: RecordWrapper,
     props: {
       collectionCode,
-      viewerComponent: viewerComponent,
+      viewerComponent: component,
       errorComponent: errorComponent,
       loadingComponent: loadingComponent,
       httpOptionsProps,

@@ -38,6 +38,9 @@ export function useFetcher<DataType, ErrorType: HttpError>(
     baseUrl = baseUrl.substr(0, baseUrl.length - 1)
   }
   options = { ...options }
+  if (options.revalidateOnFocus === undefined) {
+    options.revalidateOnFocus = false
+  }
 
   const currentApiUrl = ref(null)
   const currentApiModule = ref(null)
@@ -59,7 +62,9 @@ export function useFetcher<DataType, ErrorType: HttpError>(
 
   const { data, error: rawError, isValidating, mutate: doReload } =
     useSWRV(
-      () => currentApiUrlWithQuery.value ? url2key(currentApiUrlWithQuery.value) : '',
+      () => {
+        return currentApiUrlWithQuery.value ? url2key(currentApiUrlWithQuery.value) : ''
+      },
       async key => {
         const ret = await fetcherFunction(key2url(key), {
           urlWithoutQuery: currentApiUrl.value,

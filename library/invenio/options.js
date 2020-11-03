@@ -34,7 +34,7 @@ export function useInvenioOptions(baseUrl: string, options: InvenioHttpOptionOpt
   }
 
   const {
-    stale, loading, data, error, load, loaded, reload
+    stale, loading, data, error, load: httpLoad, loaded, reload
   } = useHttp<InvenioOptions, HttpError>(
     baseUrl,
     'options',
@@ -48,6 +48,10 @@ export function useInvenioOptions(baseUrl: string, options: InvenioHttpOptionOpt
     // [{ 'code': 'category', 'facet': { 'label': 'category' } }]
     return data.value.facets
   })
+
+  function load(module, query, force) {
+    return httpLoad(module + '/', query, force)
+  }
 
   return {
     load,

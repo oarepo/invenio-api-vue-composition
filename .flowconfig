@@ -1,4 +1,5 @@
 [ignore]
+cannot-resolve-module
 
 [include]
 

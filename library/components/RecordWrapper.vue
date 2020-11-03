@@ -2,18 +2,20 @@
   <component
     :is="currentComponent"
     :record-api="recordApi"
-    :record="recordApi.record.value"
-    :loading="recordApi.loading.value"
-    :loaded="recordApi.loaded.value"
-    :error="recordApi.error.value"
-    :stale="recordApi.stale.value"
+    :record-id="recordId"
+    :record="record"
+    :loading="loading"
+    :loaded="loaded"
+    :error="error"
+    :stale="stale"
     :reload="recordApi.reload"
     @reload="recordApi.reload"
+    v-bind="propsAndAttributes"
   ></component>
 </template>
 
 <script>
-import { computed, defineComponent, getCurrentInstance } from '@vue/composition-api'
+import { computed, defineComponent, getCurrentInstance, watch } from '@vue/composition-api'
 import { useInvenioRecord } from '..'
 import { selectComponent } from './componentSelector'
 
@@ -47,7 +49,7 @@ export default defineComponent({
       type: Object
     }
   },
-  setup(props) {
+  setup(props, ctx) {
     const vm = getCurrentInstance()
     const recordId = computed(() => vm.$route.params.recordId)
 
@@ -56,29 +58,35 @@ export default defineComponent({
     function reload() {
       recordApi.load(recordId.value, props.collectionCode, true)
     }
+
+    watch(recordId, () => {
+      if (recordId.value) {
+        reload()
+      }
+    })
     reload()
 
-    const currentComponent = selectComponent (
+    const currentComponent = selectComponent(
       () => recordApi.record.value,
       () => recordApi.error.value,
       props)
+
+    const propsAndAttributes = computed(() => ({
+      ...props,
+      ...ctx.attrs
+    }))
 
     return {
       record: recordApi.record,
       recordApi,
       reload,
       recordId,
-      currentComponent
-    }
-  },
-  computed: {
-    routeParams: function () {
-      return this.$route.params
-    }
-  },
-  watch: {
-    routeParams: function() {
-      this.reload()
+      currentComponent,
+      propsAndAttributes,
+      loading: recordApi.loading,
+      loaded: recordApi.loaded,
+      error: recordApi.error,
+      stale: recordApi.stale
     }
   }
 })

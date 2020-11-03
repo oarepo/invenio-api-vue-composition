@@ -56,18 +56,16 @@ export function stringifyQuery(obj) {
   return res ? `?${res}` : ''
 }
 
-export function concatenateUrl(baseUrl, partOrUrl) {
-  if (!partOrUrl) {
-    return baseUrl
+export function concatenateUrl(baseUrl, ...parts) {
+  for (let part of parts) {
+    part = part.toString()
+    if (part.startsWith('/') && baseUrl.endsWith('/')) {
+      baseUrl = baseUrl + part.substr(1)
+    } else if (!part.startsWith('/') && !baseUrl.endsWith('/')) {
+      baseUrl = baseUrl + '/' + part
+    } else {
+        baseUrl = baseUrl + part
+    }
   }
-  partOrUrl = partOrUrl.toString()
-  if (partOrUrl.startsWith('http://') || partOrUrl.startsWith('https://')) {
-    return partOrUrl
-  } else if (partOrUrl.startsWith('/')) {
-    const [start, end] = [baseUrl.slice(0, 8), baseUrl.slice(8)]  // end is after potential https://
-    const endServer = end.split('/', 1)[0]      // up to the first / (that is end of hostname)
-    return start + endServer + partOrUrl
-  } else {
-    return baseUrl + '/' + partOrUrl
-  }
+  return baseUrl
 }

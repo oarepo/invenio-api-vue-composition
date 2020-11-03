@@ -1,6 +1,6 @@
 <template>
     <component
-            :is="currentComponent"
+            :is="viewerComponent"
             :collection-api="collectionApi"
             :records="collectionApi.records.value"
             :facets="facets"
@@ -9,27 +9,19 @@
             :error="collectionApi.error.value"
             :stale="collectionApi.stale.value"
             :pages="collectionApi.pages.value"
-            :page="$query.page"
-            :pageSize="$query.size"
-            :query="$query.q"
             :reload="collectionApi.reload"
             @reload="collectionApi.reload"
-            @nextPage="nextPage"
-            @prevPage="prevPage"
-            @setPage="setPage"
-            @setPageSize="setPageSize"
-            @search="search"
             v-bind="propsAndAttributes"
     ></component>
 </template>
 <script>
 import { computed, defineComponent, getCurrentInstance, watch } from '@vue/composition-api'
 import { useInvenioCollection } from '..'
-import {selectComponent} from './componentSelector'
 import { useFacetModels } from './facets'
 
+
 export default defineComponent({
-  name: 'invenio-collection-wrapper',
+  name: 'invenio-collection-api-wrapper',
   props: {
     collectionCode: {
       required: true,
@@ -38,14 +30,6 @@ export default defineComponent({
     viewerComponent: {
       required: true,
       type: [Object, Function]
-    },
-    loadingComponent: {
-      type: [Object, Function],
-      default: undefined
-    },
-    errorComponent: {
-      type: [Object, Function],
-      default: undefined
     },
     apiUrl: {
       type: String,
@@ -77,57 +61,12 @@ export default defineComponent({
     const collectionApi = useInvenioCollection(props.apiUrl, getProps, props.httpOptionsProps)
 
     function reload() {
-      collectionApi.load(props.collectionCode, vm.$query, true)
+        collectionApi.setCollectionCode(props.collectionCode)
     }
     watch(computed(() => vm.$query.__self.incr), () => {
-      // console.log('query changed, loading ...', vm.$query.__self.incr, JSON.stringify(vm.$query))
       reload()
     })
-    watch(props, reload)
-
-    const thisRouteName = vm.$route.name
-    const isThisRoute = computed(() => vm.$route.name === thisRouteName)
-    watch(isThisRoute, () => {
-      if (isThisRoute.value) {
-        reload()
-      }
-    })
-
     reload()
-
-    const currentComponent = selectComponent (
-      () => collectionApi.records.value,
-      () => collectionApi.error.value,
-      props)
-
-    function nextPage() {
-      if (vm.$query.page < collectionApi.pages.value) {
-        vm.$query.page++
-      }
-    }
-
-    function prevPage() {
-      if (vm.$query.page > 1) {
-        vm.$query.page--
-      }
-    }
-
-    function setPage(page) {
-      if (page >= 1 && page <= collectionApi.pages.value) {
-        vm.$query.page = page
-      }
-    }
-
-    function setPageSize(pageSize) {
-      if (pageSize > 0) {
-        vm.$query.size = pageSize
-      }
-    }
-
-    function search(q) {
-      vm.$query.q = q
-    }
-
 
     const facets = useFacetModels(collectionApi, vm)
 
@@ -137,14 +76,9 @@ export default defineComponent({
     }))
 
     return {
+      reload,
       collectionApi,
-      currentComponent,
       facets,
-      nextPage,
-      prevPage,
-      setPage,
-      setPageSize,
-      search,
       propsAndAttributes
     }
   }

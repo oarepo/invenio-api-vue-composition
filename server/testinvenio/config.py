@@ -12,6 +12,24 @@ def loader():
     return request.json
 
 
+class CommittingRecordIndexer(RecordIndexer):
+    def delete(self, record, **kwargs):
+        index, doc_type = self.record_to_index(record)
+        index, doc_type = self._prepare_index(index, doc_type)
+        try:
+            return super().delete(record, **kwargs)
+        finally:
+            self.client.indices.refresh(index)
+
+    def index(self, record, arguments=None, **kwargs):
+        index, doc_type = self.record_to_index(record)
+        index, doc_type = self._prepare_index(index, doc_type)
+        try:
+            return super().index(record, arguments, **kwargs)
+        finally:
+            self.client.indices.refresh(index)
+
+
 RECORDS_REST_ENDPOINTS = {
     'testinvenio-records':
         dict(
@@ -21,14 +39,15 @@ RECORDS_REST_ENDPOINTS = {
             default_endpoint_prefix=True,
             record_class=TestRecord,
             search_class=RecordsSearch,
-            indexer_class=RecordIndexer,
+            indexer_class=CommittingRecordIndexer,
             search_index='testinvenio-record',
             search_type=None,
             record_serializers={
                 'application/json': 'invenio_records_rest.serializers:json_v1_response',
             },
             record_loaders={
-                'application/json': loader
+                'application/json': loader,
+                'application/json-patch+json': loader
             },
             search_serializers={
                 'application/json': 'invenio_records_rest.serializers:json_v1_search',
@@ -38,6 +57,8 @@ RECORDS_REST_ENDPOINTS = {
             default_media_type='application/json',
             max_result_window=10000,
             create_permission_factory_imp=allow_all,
+            update_permission_factory_imp=allow_all,
+            delete_permission_factory_imp=allow_all,
             error_handlers=dict(),
         )
 }

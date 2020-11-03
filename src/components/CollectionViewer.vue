@@ -19,9 +19,11 @@
       </div>
       <div class="twocolumn">
         <div class="row">
-          <button v-if="page > 1" @click="$emit('prevPage')">prev page</button>
-          <span><input :value="page" @change="$emit('setPage', $event.target.value)"> of {{ pages }}</span>
-          <button v-if="page < pages" @click="$emit('nextPage')">next page</button>
+          <button v-if="page > 1" @click="$emit('prevPage')"><i class="fas fa-caret-left"></i></button>
+          <span><input :value="page" @change="$emit('setPage', $event.target.value)" style="width: 50px"> of {{
+              pages
+            }}</span>
+          <button v-if="page < pages" @click="$emit('nextPage')"><i class="fas fa-caret-right"></i></button>
         </div>
 
         <select :value="pageSize" @change="$emit('setPageSize', $event.target.value)">
@@ -40,7 +42,7 @@
       <div class="facets-list">
         <facet v-for="facet in facets" :key="facet.code" :facet="facet"></facet>
       </div>
-
+      <router-link :to="{name: 'record-creator'}" tag="button">Create a new record</router-link>
       <div class="debug-info">
         <b>Internals:</b>
         <table>
