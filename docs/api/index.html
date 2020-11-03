@@ -51,6 +51,12 @@
                         .record
                       </a></li>
                     
+                      <li><a
+                        href='#collectionapi'
+                        class='regular pre-open'>
+                        .collectionApi
+                      </a></li>
+                    
                     </ul>
                   
                   
@@ -438,7 +444,7 @@
 
               
                 <tr>
-  <td class='break-word'><span class='code bold'>options.viewerComponent</span> <code class='quiet'>Component</code>
+  <td class='break-word'><span class='code bold'>options.component</span> <code class='quiet'>Component</code>
   </td>
   <td class='break-word'><span>viewer component for showing the records and facets
 </span></td>
@@ -512,6 +518,14 @@
 
 
               
+                <tr>
+  <td class='break-word'><span class='code bold'>options.wrapperComponent</span> <code class='quiet'>any</code>
+  </td>
+  <td class='break-word'><span></span></td>
+</tr>
+
+
+              
             </tbody>
           </table>
           
@@ -562,7 +576,7 @@
 <pre class='hljs'> routes = [
    collection({
        <span class="hljs-attr">collectionCode</span>: <span class="hljs-string">'records'</span>,
-       <span class="hljs-attr">viewerComponent</span>: MyCollectionViewer,
+       <span class="hljs-attr">component</span>: MyCollectionViewer,
      },
      { <span class="hljs-attr">name</span>: <span class="hljs-string">'recordList'</span> }
    )
@@ -682,7 +696,7 @@ If not defined, equals to route path up to the last '/'
 
               
                 <tr>
-  <td class='break-word'><span class='code bold'>options.viewerComponent</span> <code class='quiet'>Component</code>
+  <td class='break-word'><span class='code bold'>options.component</span> <code class='quiet'>Component</code>
   </td>
   <td class='break-word'><span>viewer component for showing the record
 </span></td>
@@ -776,7 +790,7 @@ If not defined, equals to route path up to the last '/'
 <pre class='hljs'> routes = [
    record({
        <span class="hljs-attr">collectionCode</span>: <span class="hljs-string">'records'</span>,
-       <span class="hljs-attr">viewerComponent</span>: MyRecordViewer,
+       <span class="hljs-attr">component</span>: MyRecordViewer,
      },
      { <span class="hljs-attr">name</span>: <span class="hljs-string">'record'</span> }
    )
@@ -792,6 +806,209 @@ If not defined, equals to route path up to the last '/'
        <span class="hljs-attr">viewerComponent</span>: MyRecordViewer,
        <span class="hljs-attr">errorComponent</span>: <span class="hljs-string">'simple'</span>,
        <span class="hljs-attr">loadingComponent</span>: <span class="hljs-string">'empty'</span>
+     }
+   }
+ ]</pre>
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='collectionapi'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>collectionApi(options, extra)</span>
+        </div>
+      </div>
+      <div class="clearfix toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Wraps a component and injects collectionApi to its props. The collectionApi is configured with the current collection.</p>
+
+    <div class='pre p1 fill-light mt0'>collectionApi(options: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>, extra: any): any</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>options</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">Object</a>)</code>
+	    options
+
+          </div>
+          
+          <table class='mt1 mb2 fixed-table h5 col-12'>
+            <colgroup>
+              <col width='30%' />
+              <col width='70%' />
+            </colgroup>
+            <thead>
+              <tr class='bold fill-light'>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody class='mt1'>
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.path</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+  </td>
+  <td class='break-word'><span>route path. If not defined, equals to collectionCode
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.collectionCode</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+  </td>
+  <td class='break-word'><span>collection code that will be appended to api url. If not defined, equals to route path
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.component</span> <code class='quiet'>Component</code>
+  </td>
+  <td class='break-word'><span>wrapped component
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.apiUrl</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+  </td>
+  <td class='break-word'><span>Invenio api url, defaults to '/api'
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.recordRouteName</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+  </td>
+  <td class='break-word'><span>name of route that will be used to show the record. the route must contain 
+<code>recordId</code>
+ url param.
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.httpOptionsProps</span> <code class='quiet'><a href="#inveniohttpoptionoptions">InvenioHttpOptionOptions</a></code>
+  </td>
+  <td class='break-word'><span>InvenioHttpOptionOptions used for fetching collection options
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.httpGetProps</span> <code class='quiet'><a href="#inveniocollectionlistoptions">InvenioCollectionListOptions</a></code>
+  </td>
+  <td class='break-word'><span>InvenioCollectionListOptions used for fetching the collection
+</span></td>
+</tr>
+
+
+              
+            </tbody>
+          </table>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>extra</span> <code class='quiet'>(any)</code>
+	    extra parameters to be merged with the route object
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>any</code>:
+        object to put into the router routes
+<pre class='hljs'><span class="hljs-tag">&lt;<span class="hljs-name">component</span>
+  <span class="hljs-attr">:is</span>=<span class="hljs-string">"currentComponent"</span>
+  <span class="hljs-attr">:collection-api</span>=<span class="hljs-string">"collectionApi"</span>
+  <span class="hljs-attr">:records</span>=<span class="hljs-string">"collectionApi.records.value"</span>
+  <span class="hljs-attr">:facets</span>=<span class="hljs-string">"facets"</span>
+  <span class="hljs-attr">:loading</span>=<span class="hljs-string">"collectionApi.loading.value"</span>
+  <span class="hljs-attr">:loaded</span>=<span class="hljs-string">"collectionApi.loaded.value"</span>
+  <span class="hljs-attr">:error</span>=<span class="hljs-string">"collectionApi.error.value"</span>
+  <span class="hljs-attr">:stale</span>=<span class="hljs-string">"collectionApi.stale.value"</span>
+  <span class="hljs-attr">:pages</span>=<span class="hljs-string">"collectionApi.pages.value"</span>
+  <span class="hljs-attr">:reload</span>=<span class="hljs-string">"collectionApi.reload"</span>
+&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">component</span>&gt;</span></pre>
+<p><em>Example</em>:</p>
+<pre class='hljs'> routes = [
+   collectionApi({
+     <span class="hljs-attr">path</span>: <span class="hljs-string">'/create'</span>
+     <span class="hljs-attr">collectionCode</span>: <span class="hljs-string">'records'</span>,
+     <span class="hljs-attr">component</span>: RecordCreator,
+     },
+     { <span class="hljs-attr">name</span>: <span class="hljs-string">'create'</span> }
+   )
+ ]</pre>
+<p> Will evaluate to:</p>
+<pre class='hljs'> routes = [
+  {
+     <span class="hljs-attr">path</span>: <span class="hljs-string">'/create'</span>,
+     <span class="hljs-attr">component</span>: CollectionApiWrapper,
+     <span class="hljs-attr">name</span>: <span class="hljs-string">'create'</span>,
+     <span class="hljs-attr">props</span>: {
+       <span class="hljs-attr">collectionCode</span>: <span class="hljs-string">'records'</span>,
+       <span class="hljs-attr">viewerComponent</span>: RecordCreator,
+     },
+     <span class="hljs-attr">meta</span>: {
+       <span class="hljs-attr">query</span>: {
+         <span class="hljs-attr">page</span>: <span class="hljs-string">'int:1'</span>,
+         <span class="hljs-attr">size</span>: <span class="hljs-string">'int:10'</span>,
+         <span class="hljs-attr">facets</span>: <span class="hljs-string">'commaarray:'</span>,
+         <span class="hljs-attr">q</span>: <span class="hljs-string">'string:'</span>
+       }
      }
    }
  ]</pre>
@@ -2385,6 +2602,18 @@ before it is returned.</p>
           
         </div>
       
+        <div class='space-bottom0'>
+          <span class='code bold'>setCollectionCode</span> <code class='quiet'>(function (collectionCode: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): void)</code>
+          
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>createRecord</span> <code class='quiet'>(function (data: Record, options: {collectionCode: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, resultContainer: <a href="#useinveniorecordcomposable">UseInvenioRecordComposable</a>&#x3C;Record>}): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;Record>)</code>
+          
+          
+        </div>
+      
     </div>
   
 
@@ -3206,6 +3435,210 @@ before it is returned.</p>
       </div>
     </div>
   
+    <div class='border-bottom' id='useinveniocollectioncomposablesetcollectioncode'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>setCollectionCode(collectionCode)</span>
+        </div>
+      </div>
+      <div class="clearfix toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>sets the collection code but does not fetch collection</p>
+
+    <div class='pre p1 fill-light mt0'>setCollectionCode(collectionCode: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): void</div>
+  
+    <p>
+      Type:
+      function (collectionCode: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): void
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>collectionCode</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    the collection code to be set
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>void</code>
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='useinveniocollectioncomposablecreaterecord'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>createRecord(data, options)</span>
+        </div>
+      </div>
+      <div class="clearfix toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>creates a new record</p>
+
+    <div class='pre p1 fill-light mt0'>createRecord(data: Record, options: {collectionCode: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, resultContainer: <a href="#useinveniorecordcomposable">UseInvenioRecordComposable</a>&#x3C;Record>}): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;Record></div>
+  
+    <p>
+      Type:
+      function (data: Record, options: {collectionCode: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, resultContainer: <a href="#useinveniorecordcomposable">UseInvenioRecordComposable</a>&#x3C;Record>}): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;Record>
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>data</span> <code class='quiet'>(Record)</code>
+	    record's metadata
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>options</span> <code class='quiet'>({collectionCode: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, resultContainer: <a href="#useinveniorecordcomposable">UseInvenioRecordComposable</a>&#x3C;Record>})</code>
+	    extra options
+
+          </div>
+          
+          <table class='mt1 mb2 fixed-table h5 col-12'>
+            <colgroup>
+              <col width='30%' />
+              <col width='70%' />
+            </colgroup>
+            <thead>
+              <tr class='bold fill-light'>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody class='mt1'>
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.collectionCode</span> <code class='quiet'>any</code>
+  </td>
+  <td class='break-word'><span>if set, use this collection code. If not, use the collection code of the current collection
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.resultContainer</span> <code class='quiet'>any</code>
+  </td>
+  <td class='break-word'><span>if set, store the result to this UseInvenioRecordComposable
+</span></td>
+</tr>
+
+
+              
+            </tbody>
+          </table>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;Record></code>:
+        the created record
+<p><strong>resultContainer usage:</strong></p>
+<p>As SWRV depends on getCurrentInstance, it is impossible to create composable outside of <code>setup</code> method, so the resultContainer
+must be preallocated there.</p>
+<pre class='hljs'>setup(props) {
+   <span class="hljs-keyword">const</span> collectionApi = props.collectionApi   <span class="hljs-comment">// got here from a wrapper component, see routing section</span>
+   <span class="hljs-keyword">const</span> recordApi = useRecordApi(collectionApi.baseUrl, collectionApi.httpGetOptions, collectionApi.httpOptionOptions)
+   <span class="hljs-keyword">const</span> data = ref({})
+   <span class="hljs-keyword">async</span> click() {
+       <span class="hljs-keyword">await</span> collectionApi.createRecord(data, {<span class="hljs-attr">resultContainer</span>: recordApi})
+       <span class="hljs-comment">// now can do whatever with the result, for example recordApi.patch(...)</span>
+   }
+}</pre>
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
 </div>
 
   
@@ -3325,6 +3758,12 @@ before it is returned.</p>
       
         <div class='space-bottom0'>
           <span class='code bold'>patch</span> <code class='quiet'>(function (data: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#patchoperation">PatchOperation</a>>, options: {recordId: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, collectionCode: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, storeResult: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?}): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;Record>)</code>
+          
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>remove</span> <code class='quiet'>(function (options: {recordId: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, collectionCode: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?}): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;any>)</code>
           
           
         </div>
@@ -4218,6 +4657,107 @@ Pass null to load record in collectionCode (set for example in useCollection cal
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;Record></code>
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='useinveniorecordcomposableremove'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>remove(options)</span>
+        </div>
+      </div>
+      <div class="clearfix toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Removes a record</p>
+
+    <div class='pre p1 fill-light mt0'>remove(options: {recordId: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, collectionCode: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?}): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;any></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>options</span> <code class='quiet'>({recordId: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?, collectionCode: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?})</code>
+	    
+          </div>
+          
+          <table class='mt1 mb2 fixed-table h5 col-12'>
+            <colgroup>
+              <col width='30%' />
+              <col width='70%' />
+            </colgroup>
+            <thead>
+              <tr class='bold fill-light'>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody class='mt1'>
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.recordId</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+  </td>
+  <td class='break-word'><span>id of the record. If not set, the loaded record id will be used
+</span></td>
+</tr>
+
+
+              
+                <tr>
+  <td class='break-word'><span class='code bold'>options.collectionCode</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+  </td>
+  <td class='break-word'><span>collection code. If not set, collection of the currently loaded record will be used
+</span></td>
+</tr>
+
+
+              
+            </tbody>
+          </table>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;any></code>
     
   
 
