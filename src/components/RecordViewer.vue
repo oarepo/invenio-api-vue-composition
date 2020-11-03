@@ -100,7 +100,7 @@
         <td>
           Birthdate
         </td>
-        <td>
+        <td v-if="author.birthdate">
           {{ $d(new Date(author.birthdate), 'short') }}
         </td>
       </tr>
