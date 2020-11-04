@@ -1,8 +1,8 @@
 {
-  "name": "invenio-api-vue-composition",
-  "version": "1.0.0a1",
+  "name": "@oarepo/invenio-api-vue-composition",
+  "version": "1.0.0",
   "main": "oarepo-invenio-api-vue-composition.esm.js",
-  "private": true,
+  "private": false,
   "scripts": {
     "serve": "vue-cli-service serve --host localhost",
     "demobuild": "vue-cli-service build",
