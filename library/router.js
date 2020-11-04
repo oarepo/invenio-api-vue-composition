@@ -8,6 +8,7 @@ import deepmerge from 'deepmerge'
  * Generates route path for a collection
  *
  * @param options                 options
+ * @param {string} options.name            Route name
  * @param {string} options.apiUrl          Invenio api url, defaults to '/api'
  * @param {string} options.collectionCode  collection code that will be appended to api url. If not defined, equals to route path
  * @param {string} options.path            route path. If not defined, equals to collectionCode
@@ -104,6 +105,7 @@ import deepmerge from 'deepmerge'
  */
 export function collection(
   {
+    name,
     path,
     collectionCode,
     component,
@@ -120,6 +122,7 @@ export function collection(
   }
   let proto = {
     path: (path ? path : '/' + collectionCode),
+    name,
     component: wrapperComponent,
     props: {
       collectionCode: (collectionCode ? collectionCode : path.split('/').filter(x => x).join('/')),
@@ -150,6 +153,7 @@ export function collection(
  * Wraps a component and injects collectionApi to its props. The collectionApi is configured with the current collection.
  *
  * @param options                 options
+ * @param {string} options.name            Route name
  * @param {string} options.apiUrl          Invenio api url, defaults to '/api'
  * @param {string} options.collectionCode  collection code that will be appended to api url. If not defined, equals to route path
  * @param {string} options.path            route path. If not defined, equals to collectionCode
@@ -222,6 +226,7 @@ export function collection(
  */
 export function collectionApi(
   {
+    name,
     path,
     collectionCode,
     component,
@@ -231,6 +236,7 @@ export function collectionApi(
     httpGetProps,
   }, extra: any): any {
   return collection({
+    name,
     path,
     collectionCode,
     component,
@@ -247,6 +253,7 @@ export function collectionApi(
  * Generates route path for a record
  *
  * @param options                 options
+ * @param {string} options.name            Route name
  * @param {string} options.apiUrl          Invenio api url, defaults to '/api'
  * @param {string} options.collectionCode  collection code that will be appended to api url.
  *                                         If not defined, equals to route path up to the last '/'
@@ -314,6 +321,7 @@ export function collectionApi(
  */
 export function record(
   {
+    name,
     path,
     collectionCode,
     component,
@@ -330,6 +338,7 @@ export function record(
     collectionCode = collectionCodeSplit.slice(0, path.length - 1).join('/')
   }
   let proto = {
+    name,
     path,
     component: RecordWrapper,
     props: {

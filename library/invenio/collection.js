@@ -34,7 +34,7 @@ export function useInvenioCollection<Record>(
   } = useInvenioOptions(baseUrl, httpOptionOptions)
 
   const currentCollectionCode = ref('')
-  
+
   const {
     currentApiModule, currentApiUrl, currentApiQuery, currentApiUrlWithQuery, stale,
     loading, data, error, load: httpLoad, reload, loaded, baseUrl: normalizedBaseUrl

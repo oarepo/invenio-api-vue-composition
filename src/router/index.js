@@ -17,20 +17,19 @@ const routes = [
     //
     // to make this scenario easier, collectionApi injects ``collection-api`` prop initialized with
     // the current collection code. No request is performed at this time.
+    name: 'record-creator',
     path: '/create',
     collectionCode: 'records',
     component: RecordCreator
-  }, {
-    name: 'record-creator'
   }),
 
   record({
     // path is implicitely '/${collectionCode}'  -we want the records in the root, so have to create it manually
+    name: 'record-viewer-editor',
     path: '/:recordId',
     collectionCode: 'records',
     component: RecordViewerEditor
   }, {
-    name: 'record-viewer-editor',
     props: {
       extraProperty: 1
     },
@@ -49,13 +48,13 @@ const routes = [
   }),
 
   collection({
+      name: 'record-list',
       path: '/',
       collectionCode: 'records',
       component: CollectionViewer,
       recordRouteName: 'record-viewer'
     },
     {
-      name: 'record-list',
       meta: {
         query: {
           size: 'int:3' // small page size for demo

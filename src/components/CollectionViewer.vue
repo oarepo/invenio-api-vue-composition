@@ -1,5 +1,6 @@
 <template>
   <div class="twocolumn">
+    <!-- record list -->
     <div class="left record-list">
       <div v-for="record in records" :key="record.id" class="record-list-record">
         <h3>
@@ -17,7 +18,9 @@
           </tr>
         </table>
       </div>
+
       <div class="twocolumn">
+        <!-- pagination -->
         <div class="row">
           <button v-if="page > 1" @click="$emit('prevPage')"><i class="fas fa-caret-left"></i></button>
           <span><input :value="page" @change="$emit('setPage', $event.target.value)" style="width: 50px"> of {{
@@ -26,6 +29,7 @@
           <button v-if="page < pages" @click="$emit('nextPage')"><i class="fas fa-caret-right"></i></button>
         </div>
 
+        <!-- page size selection -->
         <select :value="pageSize" @change="$emit('setPageSize', $event.target.value)">
           <option value="3" :selected="pageSize === 3">3 records per page</option>
           <option value="10" :selected="pageSize === 10">10 records per page</option>
@@ -35,14 +39,22 @@
       </div>
     </div>
     <div class="right">
-      <div class="row items-stretch">
+
+      <!-- search - could do it with change or keyup, but keeping search button -->
+      <form class="row items-stretch" @submit.prevent="doSearch">
         <input name="search" v-model="search" placeholder="Search ..." style="flex-grow: 1;">
         <button @click.prevent="doSearch"><i class="fas fa-search"></i></button>
-      </div>
+      </form>
+
+      <!-- a list of facets -->
       <div class="facets-list">
         <facet v-for="facet in facets" :key="facet.code" :facet="facet"></facet>
       </div>
+
+      <!-- create a new record page -->
       <router-link :to="{name: 'record-creator'}" tag="button">Create a new record</router-link>
+
+      <!-- and internal stuff -->
       <div class="debug-info">
         <b>Internals:</b>
         <table>
