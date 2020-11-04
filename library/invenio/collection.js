@@ -33,6 +33,8 @@ export function useInvenioCollection<Record>(
     knownFacets
   } = useInvenioOptions(baseUrl, httpOptionOptions)
 
+  const currentCollectionCode = ref('')
+  
   const {
     currentApiModule, currentApiUrl, currentApiQuery, currentApiUrlWithQuery, stale,
     loading, data, error, load: httpLoad, reload, loaded, baseUrl: normalizedBaseUrl
@@ -70,7 +72,7 @@ export function useInvenioCollection<Record>(
     }
     return data.value.hits.hits.map(record => {
       const uiLinkTransformer = httpGetOptions?.uiLinkTransformer || (record => ({
-        name: `record-${currentApiModule.value}`,
+        name: `record-${currentCollectionCode.value}`,
         params: {
           id: record.id
         }
@@ -92,8 +94,6 @@ export function useInvenioCollection<Record>(
     return Math.ceil(data.value.hits.total / (pageSize.value || 1))
   })
 
-  const currentCollectionCode = ref('')
-
   function load(module, query, force) {
     if (!module) {
       module = currentCollectionCode.value
@@ -102,7 +102,7 @@ export function useInvenioCollection<Record>(
       // reload options
       optionsLoad(module + '/')
     }
-    pageSize.value = query.size || 10
+    pageSize.value = query?.size || 10
     currentCollectionCode.value = module
     return httpLoad(module + '/', query, force)
   }

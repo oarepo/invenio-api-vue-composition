@@ -13,8 +13,8 @@ requests = "^2.24.0"
 oarepo = "^3.3.0"
 oarepo-micro-api = "^1.0.0"
 oarepo-invenio-model = "^2.0.1"
-# oarepo-ui = "^1.1.0"
-oarepo-ui = {path = "../../oarepo-ui"}
+oarepo-ui = "^2.0.0"
+# oarepo-ui = {path = "../../oarepo-ui"}
 oarepo-actions = "^1.0.1"
 deepmerge = "^0.1.1"
 Faker = "^4.14.0"

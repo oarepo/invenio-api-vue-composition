@@ -1,14 +1,16 @@
 {
   "name": "invenio-api-vue-composition",
   "version": "1.0.0a1",
+  "main": "oarepo-invenio-api-vue-composition.esm.js",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --host localhost",
-    "build": "vue-cli-service build",
+    "demobuild": "vue-cli-service build",
+    "build": "./build.sh",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
-    "apidoc": "rimraf docs/api; documentation build 'library/index.js' -f html -o docs/api --config documentation.yml --theme docs/theme",
-    "serve-apidoc": "documentation serve 'library/index.js' -f html --watch --config documentation.yml --theme docs/theme"
+    "apidoc": "rimraf docs/api; documentation build 'library/index-docapi.js' -f html -o docs/api --config documentation.yml --theme docs/theme",
+    "serve-apidoc": "documentation serve 'library/index-docapi.js' -f html --watch --config documentation.yml --theme docs/theme"
   },
   "dependencies": {
     "@oarepo/vue-query-synchronizer": "^2.4.1",
@@ -33,6 +35,8 @@
     "babel-plugin-syntax-flow": "^6.18.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "babel-preset-vue": "^2.0.2",
+    "bili": "^5.0.5",
     "documentation": "^13.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-flowtype-errors": "^4.3.0",
@@ -41,7 +45,9 @@
     "flow-bin": "^0.137.0",
     "flow-typed": "^3.2.1",
     "flush-promises": "^1.0.2",
+    "json": "^10.0.0",
     "rimraf": "^3.0.2",
+    "rollup-plugin-vue": "^5.0.0",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11"

@@ -83,6 +83,7 @@ describe('collection', () => {
       optionsResponse
     )
 
+    expect(wrapper.vm.collectionCode).toBe('records')
     expect(wrapper.vm.error).toBeFalsy()
     expect(wrapper.vm.records).toStrictEqual([
       record

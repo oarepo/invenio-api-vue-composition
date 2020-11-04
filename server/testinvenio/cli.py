@@ -1,4 +1,5 @@
 import json
+import os
 
 import click
 import faker
@@ -31,6 +32,7 @@ def category():
 @with_appcontext
 def records(count=20):
     server_name = current_app.config['SERVER_NAME']
+    cluster_server_name = os.environ.get('CLUSTER_SERVER_NAME', server_name)
     jobs = [
         f.job() for _ in range(count // 5)
     ]
@@ -42,8 +44,9 @@ def records(count=20):
             "author": profile,
             "category": category()
         }
-        assert requests.post(f'https://{server_name}/api/records/', data=json.dumps(md, default=lambda s: str(s)),
+        assert requests.post(f'https://{cluster_server_name}/api/records/', data=json.dumps(md, default=lambda s: str(s)),
                              headers={
-                                 'Content-Type': 'application/json'
+                                 'Content-Type': 'application/json',
+                                 'Host': server_name
                              },
                              verify=False).status_code == 201

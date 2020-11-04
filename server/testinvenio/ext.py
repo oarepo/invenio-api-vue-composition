@@ -2,6 +2,7 @@ import re
 
 from flask import jsonify
 from invenio_base.signals import app_loaded
+from werkzeug.wrappers import BaseRequest
 
 from . import config
 
@@ -31,3 +32,4 @@ def loaded(target, app, **kwargs):
     app.register_error_handler(404, handler)
     app.register_error_handler(429, handler)
     app.register_error_handler(500, handler)
+    # app.url_map.host_matching = True

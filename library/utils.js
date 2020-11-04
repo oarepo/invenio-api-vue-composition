@@ -59,12 +59,18 @@ export function stringifyQuery(obj) {
 export function concatenateUrl(baseUrl, ...parts) {
   for (let part of parts) {
     part = part.toString()
-    if (part.startsWith('/') && baseUrl.endsWith('/')) {
-      baseUrl = baseUrl + part.substr(1)
-    } else if (!part.startsWith('/') && !baseUrl.endsWith('/')) {
+    if (part.startsWith('http://') || part.startsWith('https://')) {
+      baseUrl = part
+      continue
+    }
+    if (part.startsWith('/')) {
+      const burlStart = baseUrl.substr(0, 8)
+      const burlRest = baseUrl.substr(8).split('/', 1)
+      baseUrl = burlStart + burlRest[0] + part
+    } else if (!baseUrl.endsWith('/')) {
       baseUrl = baseUrl + '/' + part
     } else {
-        baseUrl = baseUrl + part
+      baseUrl = baseUrl + part
     }
   }
   return baseUrl

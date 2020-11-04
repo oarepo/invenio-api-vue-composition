@@ -16,7 +16,7 @@
 </template>
 <script>
 import { computed, defineComponent, getCurrentInstance, watch } from '@vue/composition-api'
-import { useInvenioCollection } from '..'
+import { useInvenioCollection } from '../invenio/collection'
 import { useFacetModels } from './facets'
 
 
