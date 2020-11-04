@@ -62,7 +62,9 @@ directly toggle the facet on/off.
 
 For a record viewer see [RecordViewer](src/components/RecordViewer.vue)
  
-See the docs/api for possible parameters and for an extensive list of properties that are passed to your component.
+See the [collection API docs](https://oarepo.github.io/invenio-api-vue-composition/api/#collection)
+ and [record API docs](https://oarepo.github.io/invenio-api-vue-composition/api/#record)
+ for possible parameters and for an extensive list of properties that are passed to your component.
 
 ### API access
 
@@ -86,6 +88,8 @@ This wrapper just creates the API, pre-populates it with the baseUrl and collect
 
 It is usable for example, for creating new records as shown above, as there is no need to load the collection
 when a new record is created within it.
+
+See [collection API docs](https://oarepo.github.io/invenio-api-vue-composition/api/#collectionapi) for details
 
 ## Composable API
 
@@ -119,4 +123,5 @@ export default {
 </script>
 ```  
 
+More documentation is at [API docs](https://oarepo.github.io/invenio-api-vue-composition/api/#useinveniocollection)
 
