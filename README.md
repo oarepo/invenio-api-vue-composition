@@ -23,7 +23,7 @@
     })
 ```
 
-## Common usage - wrapping component passing props
+## Common usage - API passed as props to your component
 
 ### Collection and record viewers
 
