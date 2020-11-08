@@ -14,6 +14,7 @@ const encode = (str) =>
 export function stringifyQuery(obj) {
   const res = obj
     ? Object.keys(obj)
+      .sort()
       .map(key => {
         const val = obj[key]
 

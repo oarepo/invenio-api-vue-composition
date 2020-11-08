@@ -11,7 +11,8 @@ import type {
 import { useInvenioOptions } from './options'
 import { useHttp } from '../http/http'
 import { concatenateUrl } from '../utils'
-import { useDefaultErrorFormatter } from '../errors'
+import { defaultErrorFormatter } from '../errors'
+import { compare, getValueByPointer } from 'fast-json-patch'
 
 /**
  * Invenio record getter/creator/updater. When the record is loaded, performs extra OPTIONS call
@@ -77,7 +78,7 @@ export function useInvenioRecord<Record>(
       }
       return record
     } catch (e) {
-      throw httpGetOptions?.errorFormatter ? httpGetOptions.errorFormatter(e) : useDefaultErrorFormatter(e)
+      throw httpGetOptions?.errorFormatter ? httpGetOptions.errorFormatter(e) : defaultErrorFormatter(e)
     }
   }
 
@@ -114,11 +115,42 @@ export function useInvenioRecord<Record>(
       }
       return record
     } catch (e) {
-      throw (httpGetOptions?.errorFormatter ? httpGetOptions.errorFormatter(e) : useDefaultErrorFormatter(e)).value
+      throw (httpGetOptions?.errorFormatter ? httpGetOptions.errorFormatter(e) : defaultErrorFormatter(e))
     }
   }
 
-  async function remove({ recordId, collectionCode } = {}) : Promise<Record> {
+  async function autoPatch(newData: any, { dataPath, storeResult, skipAllRemoves } = {}): Promise<Record> {
+    if (!newData) {
+      return data.value
+    }
+    if (storeResult === undefined) {
+      storeResult = true
+    }
+
+    let oldData = data.value.metadata
+    if (dataPath) {
+      oldData = getValueByPointer(oldData, dataPath)
+    }
+    const filteredOldData = Object.keys((newData: any)).reduce((ret, k) => {
+      if (oldData[k] !== undefined) {
+        ret[k] = oldData[k]
+      }
+      return ret
+    }, {})
+
+    let patchOps = compare(filteredOldData, newData)
+    if (skipAllRemoves) {
+      patchOps = patchOps.filter(x => x.op !== 'remove')
+    }
+    if (dataPath) {
+      patchOps.forEach(op => {
+        op.path = `${dataPath}${op.path}`
+      })
+    }
+    return patch(patchOps, { storeResult })
+  }
+
+  async function remove({ recordId, collectionCode } = {}): Promise<Record> {
     if (recordId === undefined) {
       recordId = currentRecordId.value
     }
@@ -130,7 +162,7 @@ export function useInvenioRecord<Record>(
       const resp = await axios.delete(deleteUrl)
       return resp.data
     } catch (e) {
-      throw (httpGetOptions?.errorFormatter ? httpGetOptions.errorFormatter(e) : useDefaultErrorFormatter(e)).value
+      throw (httpGetOptions?.errorFormatter ? httpGetOptions.errorFormatter(e) : defaultErrorFormatter(e))
     }
   }
 
@@ -146,6 +178,7 @@ export function useInvenioRecord<Record>(
     reload,
     create,
     patch,
+    autoPatch,
     remove,
     loading,
     loaded,

@@ -8,9 +8,9 @@ import type {
   UseInvenioCollectionComposable,
 } from './types'
 import { useHttp } from '../http/http'
-import { concatenateUrl } from '../utils'
+import { concatenateUrl, stringifyQuery } from '../utils'
 import axios from 'axios'
-import { useDefaultErrorFormatter } from '../errors'
+import { defaultErrorFormatter } from '../errors'
 
 /**
  * Invenio collection getter. When the collection is loaded, performs extra OPTIONS call
@@ -36,7 +36,7 @@ export function useInvenioCollection<Record>(
   const currentCollectionCode = ref('')
 
   const {
-    currentApiModule, currentApiUrl, currentApiQuery, currentApiUrlWithQuery, stale,
+    currentApiUrl, currentApiQuery, currentApiUrlWithQuery, stale,
     loading, data, error, load: httpLoad, reload, loaded, baseUrl: normalizedBaseUrl
   } = useHttp(
     baseUrl,
@@ -94,7 +94,38 @@ export function useInvenioCollection<Record>(
     return Math.ceil(data.value.hits.total / (pageSize.value || 1))
   })
 
-  function load(module, query, force) {
+  function shouldLoadFacetsOnly(module, query) {
+    if (!query || module !== currentCollectionCode.value) {     // if no query or collection changed, load normally
+      return false
+    }
+    const previousQuery = {...(currentApiQuery.value || {})}
+
+    const prevEnabledFacets = previousQuery.facets
+    const newEnabledFacets = query.facets
+
+    // if the ?facets is the same, it is not a loading-only facet query
+    if (prevEnabledFacets === newEnabledFacets) {
+      return false
+    }
+
+    // remove ?facets from the duplicated query
+    delete previousQuery.facets
+    delete query.facets
+
+    // if the rest equals, only the ?facets has changed - thus reloading facets only. otherwise reloading
+    // the full page
+    return stringifyQuery(previousQuery) === stringifyQuery(query)
+  }
+
+  async function loadFacets(module, query) {
+    query.size = 1
+    const urlWithQuery = `${concatenateUrl(normalizedBaseUrl, module)}${stringifyQuery(query)}`
+    const ret = await axios.get(urlWithQuery, {headers: (httpGetOptions : any).headers})
+    data.value.aggregations = ret.data.aggregations
+  }
+
+  async function load(module, query, force) {
+    query = query ? JSON.parse(JSON.stringify(query)) : null
     if (!module) {
       module = currentCollectionCode.value
     }
@@ -104,6 +135,9 @@ export function useInvenioCollection<Record>(
     }
     pageSize.value = query?.size || 10
     currentCollectionCode.value = module
+    if (query && shouldLoadFacetsOnly(module, query)) {
+      return await loadFacets(module + '/', query)
+    }
     return httpLoad(module + '/', query, force)
   }
 
@@ -132,7 +166,7 @@ export function useInvenioCollection<Record>(
       }
       return record
     } catch (e) {
-      throw httpGetOptions?.errorFormatter ? httpGetOptions.errorFormatter(e) : useDefaultErrorFormatter(e)
+      throw httpGetOptions?.errorFormatter ? httpGetOptions.errorFormatter(e) : defaultErrorFormatter(e)
     }
   }
 

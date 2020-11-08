@@ -75,18 +75,34 @@ export type HttpError = {
 /**
  * Options passed to useFetcher composable
  */
-export type FetcherOptions<ErrorType> = {
+export type FetcherOptions<DataType, ErrorType> = {
   /**
    * function responsible for converting raw error (for example from axios) to a more suitable generic error type
    * @param rawError
    */
-  errorFormatter: (rawError: Ref<any>) => Ref<ErrorType>
+  errorFormatter: (rawError: Ref<any>) => Ref<ErrorType>,
+  /**
+   * A function that is called while the data are being loaded.
+   * @param data        previous data
+   * @param error       previous error
+   * @param oldUrl      the old url
+   * @param oldQuery    the old query
+   * @param newUrl      the new url
+   * @param newQuery    the new query
+   * @param context     loading context with url, query and options
+   *
+   * @returns true      if the previous data should be kept, false if they should be cleared on loading
+   */
+  keepData?: (data: DataType, error: ErrorType,
+              oldUrl: string, oldQuery: any,
+              newUrl: string, newQuery: any,
+              options: FetcherOptions<DataType, ErrorType>) => boolean
 } & SWRVOptions
 
 /**
  * Context for fetcher function
  */
-export type FetcherFunctionContext<ErrorType> = {
+export type FetcherFunctionContext<DataType, ErrorType> = {
   /**
    * The current url without query
    */
@@ -98,7 +114,7 @@ export type FetcherFunctionContext<ErrorType> = {
   /**
    * extra options passed to the useFetcher function
    */
-  options: FetcherOptions<ErrorType>
+  options: FetcherOptions<DataType, ErrorType>
 }
 
 /**
@@ -111,7 +127,7 @@ export type FetcherFunctionContext<ErrorType> = {
  * @param context.options          extra options passed to the useFetcher function
  */
 export type FetcherFunction<DataType, ErrorType: HttpError> =
-  (url: string, context: FetcherFunctionContext<ErrorType>) => Promise<DataType>
+  (url: string, context: FetcherFunctionContext<DataType, ErrorType>) => Promise<DataType>
 
 
 /**
@@ -174,13 +190,18 @@ export type UseFetcherComposable<DataType, ErrorType: HttpError> = {
    * @param module  the module to be loaded
    * @param query   query dictionary
    * @param force   true if reload should be trigger even if module & query are the same as previously
+   * @param keepPrevious  if set to true, the previous data/error will be retained until new data are loaded.
+   *                if set to false, the previous data/error are cleared at the beginning of loading
    */
-  load: (module: string, query?: any, force?: boolean) => void,
+  load: (module: string, query?: any, force?: boolean, keepPrevious?: boolean) => void,
 
   /**
    * Reloads the current data from server
+   *
+   * @param keepPrevious  if set to true, the previous data/error will be retained until new data are loaded.
+   *                if set to false, the previous data/error are cleared at the beginning of loading
    */
-  reload: () => void,
+  reload: (keepPrevious?: boolean) => void,
 
   /**
    * Pre-fetches data and exposes them via ``data`` property. An example

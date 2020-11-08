@@ -31,11 +31,11 @@ export default defineComponent({
       type: [Object, Function]
     },
     loadingComponent: {
-      type: [Object, Function],
+      type: [Object, Function, String],
       default: undefined
     },
     errorComponent: {
-      type: [Object, Function],
+      type: [Object, Function, String],
       default: undefined
     },
     apiUrl: {

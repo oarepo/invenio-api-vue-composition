@@ -1,6 +1,6 @@
 {
   "name": "@oarepo/invenio-api-vue-composition",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "main": "oarepo-invenio-api-vue-composition.esm.js",
   "private": false,
   "scripts": {
@@ -19,6 +19,7 @@
     "core-js": "^3.6.5",
     "deep-equal": "^2.0.4",
     "deepmerge": "^4.2.2",
+    "fast-json-patch": "^3.0.0-1",
     "swrv": "^0.8.0",
     "vue": "^2.6.11",
     "vue-i18n": "^8.22.1",

@@ -38,7 +38,7 @@ export type InvenioOptions = {
  * Currently no other options but those from fetcher
  * @see FetcherOptions
  */
-export type InvenioHttpOptionOptions = {} & FetcherOptions<HttpError>
+export type InvenioHttpOptionOptions = {} & FetcherOptions<InvenioOptions, HttpError>
 
 /**
  * Composable result of useInvenioOptions.
@@ -122,7 +122,7 @@ export type InvenioRecordOptions<Record> = {
   recordTransformer: (record: Record, response: any,
                       collectionOptions: InvenioOptions,
                       httpGetOptions: InvenioRecordOptions<Record>) => Record
-} & FetcherOptions<HttpError>
+} & FetcherOptions<Record, HttpError>
 
 
 /**
@@ -210,6 +210,20 @@ export type UseInvenioRecordComposable<Record> = {
    *                                  (and updated in UI if referenced from the template)
    */
   patch(data: PatchOperation[], options: { recordId?: string, collectionCode?: string, storeResult?: boolean }): Promise<Record>,
+  /**
+   * Creates a patch operations from the supplied data and a loaded record and sends it to the server.
+   * Note: the implementation does not remove top-level nodes, just creates add/change operation on the top-level.
+   * This is intentional, as the ui can send just the modified props without the necessity of merging them with
+   * the original object.
+   *
+   * @param newData  The modified record or its part.
+   * @param options extra options
+   * @param {boolean} options.dataPath          the object being patched is not in the root of the record but at this path
+   * @param {boolean} options.storeResult       if set, the updated record will be stored inside this composable
+   *                                  (and updated in UI if referenced from the template)
+   * @param {boolean} options.skipAllRemoves    if set, all remove operations will be skipped (not only on top-level)
+   */
+  autoPatch(newData: any, options: { dataPath?: string, storeResult?: boolean, skipAllRemoves?: boolean }): Promise<Record>,
 
   /**
    * Removes a record
@@ -255,7 +269,7 @@ export type InvenioCollectionListOptions<Record> = {
   recordTransformer: (record: Record, response: any,
                       collectionOptions: InvenioOptions,
                       httpGetOptions: InvenioCollectionListOptions<Record>) => Record
-} & FetcherOptions<HttpError>
+} & FetcherOptions<Record, HttpError>
 
 /**
  * returned options -> facets

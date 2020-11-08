@@ -3,7 +3,7 @@
 import { computed, ref, watch } from '@vue/composition-api'
 import useSWRV, { mutate } from 'swrv'
 import { concatenateUrl, key2url, stringifyQuery } from '../utils'
-import { useDefaultErrorFormatter } from '../errors'
+import { defaultErrorFormatter } from '../errors'
 import type { FetcherFunction, FetcherOptions, HttpError, Ref, UseFetcherComposable } from './types'
 import deepEqual from 'deep-equal'
 
@@ -33,7 +33,7 @@ export function useFetcher<DataType, ErrorType: HttpError>(
   baseUrl: string,
   cacheKeyPrefix: string,
   fetcherFunction: FetcherFunction<DataType, ErrorType>,
-  options: FetcherOptions<ErrorType>): UseFetcherComposable<DataType, ErrorType> {
+  options: FetcherOptions<DataType, ErrorType>): UseFetcherComposable<DataType, ErrorType> {
   if (baseUrl.endsWith('/')) {
     baseUrl = baseUrl.substr(0, baseUrl.length - 1)
   }
@@ -60,7 +60,7 @@ export function useFetcher<DataType, ErrorType: HttpError>(
     return `${cacheKeyPrefix}:${url}`
   }
 
-  const { data, error: rawError, isValidating, mutate: doReload } =
+  const { data: rawData, error: rawError, isValidating, mutate: doReload } =
     useSWRV(
       () => {
         return currentApiUrlWithQuery.value ? url2key(currentApiUrlWithQuery.value) : ''
@@ -74,12 +74,12 @@ export function useFetcher<DataType, ErrorType: HttpError>(
         return ret
       }, options)
 
-  function reload() {
-    doReload()
-  }
+  const data = ref<DataType>(null)
+  const error = ref<ErrorType>(null)
+  const keepPreviousData = ref<boolean>(false)
 
-  watch([isValidating, data, rawError], () => {
-    if (!data.value) {
+  watch([isValidating, rawData, rawError], () => {
+    if (!rawData.value) {
       loaded.value = false
     } else {
       loaded.value = true
@@ -88,20 +88,47 @@ export function useFetcher<DataType, ErrorType: HttpError>(
     // stale
     if (isValidating.value) {
       stale.value = true
-    } else if (!error.value && data.value) {
+    } else if (!error.value && rawData.value) {
       stale.value = false
+    }
+    if (!isValidating.value || !keepPreviousData.value) {
+      data.value = rawData.value
+      if (rawError.value) {
+        error.value = errorFormatter ? errorFormatter(rawError.value) : defaultErrorFormatter(rawError.value)
+      } else {
+        error.value = null
+      }
+      keepPreviousData.value = false
     }
   })
 
-  function load(module, query, force = false) {
+  function setKeepPrevious(keepPrevious, newUrl, clonedQuery) {
+    if (keepPrevious !== undefined) {
+      keepPreviousData.value = keepPrevious
+    } else if (options.keepData) {
+      keepPreviousData.value = options.keepData(
+        data.value, error.value,
+        currentApiUrl.value,
+        currentApiQuery.value,
+        newUrl, clonedQuery,
+        options)
+    } else {
+      keepPreviousData.value = false
+    }
+  }
+
+  function load(module, query, force = false, keepPrevious = undefined) {
     const clonedQuery = query ? JSON.parse(JSON.stringify(query)) : null
+    const newUrl = concatenateUrl(baseUrl, module)
+    setKeepPrevious(keepPrevious, newUrl, clonedQuery)
+
     if (currentApiModule.value === module && deepEqual(currentApiQuery.value, clonedQuery)) {
       if (force) {
         reload()
       }
     } else {
       currentApiModule.value = module
-      currentApiUrl.value = concatenateUrl(baseUrl, module)
+      currentApiUrl.value = newUrl
       if (query) {
         currentApiQuery.value = clonedQuery
       } else {
@@ -110,7 +137,10 @@ export function useFetcher<DataType, ErrorType: HttpError>(
     }
   }
 
-  const error = errorFormatter ? errorFormatter(rawError) : useDefaultErrorFormatter(rawError)
+  function reload(keepPrevious = undefined) {
+    setKeepPrevious(keepPrevious, currentApiUrl.value, currentApiQuery.value)
+    doReload()
+  }
 
   function prefetch(module: string, value: any, query: any) {
     const apiUrl = concatenateUrl(baseUrl, module)

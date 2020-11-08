@@ -1,7 +1,8 @@
 import { ArrayDatatype } from '@oarepo/vue-query-synchronizer'
+import { computed } from '@vue/composition-api'
 
 export function useFacetModels(collectionApi, vm) {
-  return (() => {
+  return computed(() => {
     const f = collectionApi.facets
     if (!f.value) {
       return f.value

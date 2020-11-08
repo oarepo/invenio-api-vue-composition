@@ -36,7 +36,7 @@ export default defineComponent({
       default: '/api'
     },
     recordRouteName: {
-      type: String
+      type: [Function, String]
     },
     httpOptionsProps: {
       type: Object
@@ -50,7 +50,7 @@ export default defineComponent({
     const getProps = {
       uiLinkTransformer(record) {
         return {
-          name: props.recordRouteName,
+          name: typeof props.recordRouteName === 'function' ? props.recordRouteName(record) : props.recordRouteName,
           params: {
             recordId: record.id
           }

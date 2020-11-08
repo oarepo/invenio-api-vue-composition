@@ -121,7 +121,7 @@ export function collection(
     wrapperComponent = CollectionWrapper
   }
   let proto = {
-    path: (path ? path : '/' + collectionCode),
+    path: (path !== undefined ? path : '/' + collectionCode),
     name,
     component: wrapperComponent,
     props: {
@@ -331,7 +331,7 @@ export function record(
     httpOptionsProps,
     httpGetProps
   }, extra: any): any {
-  if (!path) {
+  if (path === undefined) {
     path = `/${collectionCode}/:recordId`
   } else if (!collectionCode) {
     const collectionCodeSplit = path.split('/').filter(x => x)

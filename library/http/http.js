@@ -16,10 +16,11 @@ export function useHttp<DataType, ErrorType>(
   method: string,
   options: FetcherOptions<ErrorType>): UseFetcherComposable<DataType, ErrorType> {
   return useFetcher(baseUrl, method, async (url, options) => {
-    return (await axios({
+    const ret = (await axios({
       method,
       url,
       headers: options.headers
     })).data
+    return ret
   }, options)
 }

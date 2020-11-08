@@ -40,11 +40,11 @@ export default defineComponent({
       type: [Object, Function]
     },
     loadingComponent: {
-      type: [Object, Function],
+      type: [Object, Function, String],
       default: undefined
     },
     errorComponent: {
-      type: [Object, Function],
+      type: [Object, Function, String],
       default: undefined
     },
     apiUrl: {
@@ -52,7 +52,7 @@ export default defineComponent({
       default: '/api'
     },
     recordRouteName: {
-      type: String
+      type: [Function, String]
     },
     httpOptionsProps: {
       type: Object
@@ -66,7 +66,7 @@ export default defineComponent({
     const getProps = {
       uiLinkTransformer(record) {
         return {
-          name: props.recordRouteName,
+          name: typeof props.recordRouteName === 'function' ? props.recordRouteName(record) : props.recordRouteName,
           params: {
             recordId: record.id
           }
@@ -80,7 +80,6 @@ export default defineComponent({
       collectionApi.load(props.collectionCode, vm.$query, true)
     }
     watch(computed(() => vm.$query.__self.incr), () => {
-      // console.log('query changed, loading ...', vm.$query.__self.incr, JSON.stringify(vm.$query))
       reload()
     })
     watch(props, reload)
