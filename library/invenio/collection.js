@@ -5,7 +5,7 @@ import { useInvenioOptions } from './options'
 import type {
   InvenioCollectionListOptions,
   InvenioHttpOptionOptions,
-  UseInvenioCollectionComposable,
+  UseInvenioCollectionComposable
 } from './types'
 import { useHttp } from '../http/http'
 import { concatenateUrl, stringifyQuery } from '../utils'
@@ -98,7 +98,7 @@ export function useInvenioCollection<Record>(
     if (!query || module !== currentCollectionCode.value) {     // if no query or collection changed, load normally
       return false
     }
-    const previousQuery = {...(currentApiQuery.value || {})}
+    const previousQuery = { ...(currentApiQuery.value || {}) }
 
     const prevEnabledFacets = previousQuery.facets
     const newEnabledFacets = query.facets
@@ -120,25 +120,29 @@ export function useInvenioCollection<Record>(
   async function loadFacets(module, query) {
     query.size = 1
     const urlWithQuery = `${concatenateUrl(normalizedBaseUrl, module)}${stringifyQuery(query)}`
-    const ret = await axios.get(urlWithQuery, {headers: (httpGetOptions : any).headers})
+    const ret = await axios.get(urlWithQuery, { headers: (httpGetOptions: any).headers })
     data.value.aggregations = ret.data.aggregations
   }
 
-  async function load(module, query, force) {
+  async function load(collectionCode, query, force) {
     query = query ? JSON.parse(JSON.stringify(query)) : null
-    if (!module) {
-      module = currentCollectionCode.value
+    if (!collectionCode) {
+      collectionCode = currentCollectionCode.value
     }
-    if (currentCollectionCode.value !== module) {
+    if (currentCollectionCode.value !== collectionCode) {
       // reload options
-      optionsLoad(module + '/')
+      if (collectionCode.endsWith('/')) {
+        optionsLoad(collectionCode)
+      } else {
+        optionsLoad(collectionCode + '/')
+      }
     }
     pageSize.value = query?.size || 10
-    currentCollectionCode.value = module
-    if (query && shouldLoadFacetsOnly(module, query)) {
-      return await loadFacets(module + '/', query)
+    currentCollectionCode.value = collectionCode
+    if (query && shouldLoadFacetsOnly(collectionCode, query)) {
+      return await loadFacets(collectionCode + '/', query)
     }
-    return httpLoad(module + '/', query, force)
+    return httpLoad(collectionCode + '/', query, force)
   }
 
   function setCollectionCode(module) {
