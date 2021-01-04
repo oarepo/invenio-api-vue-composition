@@ -1,6 +1,6 @@
 {
   "name": "@oarepo/invenio-api-vue-composition",
-  "version": "1.0.5",
+  "version": "1.0.7",
   "main": "oarepo-invenio-api-vue-composition.esm.js",
   "private": false,
   "scripts": {

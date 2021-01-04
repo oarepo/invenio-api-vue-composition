@@ -50,7 +50,7 @@ export default defineComponent({
     }
   },
   setup(props, ctx) {
-    const vm = getCurrentInstance()
+    const vm = ctx.root
     const recordId = computed(() => vm.$route.params.recordId)
 
     const recordApi = useInvenioRecord(props.apiUrl, props.httpGetProps, props.httpOptionsProps)

@@ -62,7 +62,7 @@ export default defineComponent({
     }
   },
   setup(props, ctx) {
-    const vm = getCurrentInstance()
+    const vm = ctx.root
     const getProps = {
       uiLinkTransformer(record) {
         return {
