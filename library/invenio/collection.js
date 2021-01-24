@@ -58,7 +58,7 @@ export function useInvenioCollection<Record>(
       }
       if (ret.facet?.values && ret.buckets) {
         ret.buckets = ret.buckets.map(x => {
-          x.key_as_string = ret.facet.values[x.key] || x.key_as_string || x.key
+          x.key_as_string = ret.facet.values[x.key] || ret.facet.values[x.key_as_string] || x.key_as_string || x.key
           return x
         })
       }
