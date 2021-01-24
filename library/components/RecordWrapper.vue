@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { computed, defineComponent, getCurrentInstance, watch } from '@vue/composition-api'
+import { computed, defineComponent, watch } from '@vue/composition-api'
 import { useInvenioRecord } from '../invenio/record'
 import { selectComponent } from './componentSelector'
 

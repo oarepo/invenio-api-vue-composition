@@ -23,7 +23,7 @@
     ></component>
 </template>
 <script>
-import { computed, defineComponent, getCurrentInstance, watch } from '@vue/composition-api'
+import { computed, defineComponent, watch } from '@vue/composition-api'
 import { useInvenioCollection } from '../invenio/collection'
 import {selectComponent} from './componentSelector'
 import { useFacetModels } from './facets'
